@@ -17,7 +17,6 @@ python -m nltk.downloader punkt_tab
 ```
 
 ```bash
-git config --global url."https://github.com/".insteadOf "git@github.com:"
 mkdir -p external && cd external
 git clone https://github.com/PrimeIntellect-ai/prime-rl.git && cd prime-rl
 git checkout 961c11f4cf8ebb6e23b074d34b81df80edbcfa9f
