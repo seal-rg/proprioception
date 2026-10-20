@@ -1,0 +1,1371 @@
+diff --git a/packages/prime-rl-configs/src/prime_rl/configs/algorithm.py b/packages/prime-rl-configs/src/prime_rl/configs/algorithm.py
+index b328247..de9c198 100644
+--- a/packages/prime-rl-configs/src/prime_rl/configs/algorithm.py
++++ b/packages/prime-rl-configs/src/prime_rl/configs/algorithm.py
+@@ -174,6 +174,16 @@ class BaseAlgoConfig(BaseConfig):
+     sampling: SamplingConfig = SamplingConfig()
+     """Sampling component: which model generates train rollouts."""
+ 
++    credit: Literal["all_turns", "last_turn"] = "all_turns"
++
++    @model_validator(mode="after")
++    def validate_credit_loss(self):
++        if self.credit != "all_turns" and self.action_loss_type != "rl":
++            raise ValueError(
++                f"algorithm '{self.type}' trains the {self.action_loss_type} component, credit applies to rl"
++            )
++        return self
++
+     @model_validator(mode="after")
+     def validate_sampling_source(self):
+         """The on-policy loss types (rl, ref_kl) need the live policy's own
+@@ -199,6 +209,20 @@ class GRPOAlgoConfig(BaseAlgoConfig):
+     length_penalty: LengthPenaltyConfig | None = None
+     """Linear length penalty subtracted from each reward before the GRPO baseline (see ``LinearLengthPenaltyConfig``): a ``pass_rate``-scaled sum of output-token, input-token, and turns terms, each normalized by the group's own max for that quantity. None disables it."""
+ 
++    reference: FrozenModelConfig | None = None
++
++    carrier_kl: float = Field(0.0, ge=0)
++
++    @model_validator(mode="after")
++    def validate_carrier_kl(self):
++        if self.carrier_kl > 0 and self.reference is None:
++            raise ValueError("carrier_kl > 0 needs a reference model to score the carrier turns against")
++        if self.carrier_kl > 0 and self.credit != "last_turn":
++            raise ValueError(
++                "carrier_kl > 0 needs credit = 'last_turn': the carrier turns train the ref_kl component only"
++            )
++        return self
++
+ 
+ class EchoAlgoConfig(GRPOAlgoConfig):
+     type: Literal["echo"] = "echo"  # type: ignore[assignment]
+@@ -232,6 +256,12 @@ class MaxRLAlgoConfig(BaseAlgoConfig):
+     action_loss_type: ClassVar[ActionLossType] = "rl"
+ 
+ 
++class TailRLAlgoConfig(BaseAlgoConfig):
++    type: Literal["tail_rl"] = "tail_rl"
++
++    action_loss_type: ClassVar[ActionLossType] = "rl"
++
++
+ class OPDAlgoConfig(BaseAlgoConfig):
+     type: Literal["opd"] = "opd"
+     """On-policy distillation: the per-token signal is the reverse KL to
+@@ -305,7 +335,13 @@ class SFTAlgoConfig(BaseAlgoConfig):
+ 
+ 
+ AlgoConfig: TypeAlias = Annotated[
+-    GRPOAlgoConfig | EchoAlgoConfig | MaxRLAlgoConfig | OPDAlgoConfig | OPSDAlgoConfig | SFTAlgoConfig,
++    GRPOAlgoConfig
++    | EchoAlgoConfig
++    | MaxRLAlgoConfig
++    | TailRLAlgoConfig
++    | OPDAlgoConfig
++    | OPSDAlgoConfig
++    | SFTAlgoConfig,
+     Field(discriminator="type"),
+ ]
+ """The training algorithm: sampling plus the per-token training signal (credit
+@@ -314,6 +350,7 @@ its class defaults are the vetted setting.
+ 
+ - ``grpo`` — policy group sampling, group-relative advantage, RL loss (the default).
+ - ``max_rl`` — GRPO with mean-normalized advantages (maximum-likelihood RL).
++- ``tail_rl`` — tail-likelihood RL: MaxRL over every reward threshold, for continuous rewards in [0, 1].
+ - ``opd`` — on-policy distillation: policy samples, per-token reverse KL against a reference model. Needs ``teacher``.
+ - ``opsd`` — SDFT: policy samples, demo-conditioned reverse KL against the live policy (the teacher is the policy itself).
+ - ``sft`` — a frozen model samples, the policy trains with CE on its tokens. Needs a frozen ``sampling.source``.
+diff --git a/packages/prime-rl-configs/src/prime_rl/configs/inference.py b/packages/prime-rl-configs/src/prime_rl/configs/inference.py
+index 20ac441..ce5bf8f 100644
+--- a/packages/prime-rl-configs/src/prime_rl/configs/inference.py
++++ b/packages/prime-rl-configs/src/prime_rl/configs/inference.py
+@@ -410,6 +410,8 @@ class InferenceConfig(BaseConfig):
+     enable_fp32_router_logits: bool = True
+     """Emit fp32 MoE router logits for DeepSeek-family models (incl. GLM-5.x) by setting ``out_dtype=float32`` on the gate: the bf16×bf16 gate GEMM writes its fp32 accumulator out unrounded instead of truncating logits to bf16 before expert scoring. Matches fp32-routed checkpoints (e.g. GLM-5.x, trained with Megatron ``--moe-router-dtype fp32``); pairs with ``trainer.model.moe_router_dtype = "float32"``. Implemented as a monkey-patch over vLLM's DeepseekV2MoE, activated by setting ``additional_config["fp32_router_logits"] = True`` on the vLLM config."""
+ 
++    enable_probe_capture: bool = False
++
+     vllm_extra: dict[str, Any] = {}
+     """Extra arguments forwarded to vLLM. Applied as attributes on the vLLM namespace after config translation."""
+ 
+@@ -606,6 +608,10 @@ class InferenceConfig(BaseConfig):
+             existing = getattr(namespace, "additional_config", None) or {}
+             existing["fp32_router_logits"] = True
+             rsetattr(namespace, "additional_config", existing)
++        if self.enable_probe_capture:
++            existing = getattr(namespace, "additional_config", None) or {}
++            existing["probe_capture"] = True
++            rsetattr(namespace, "additional_config", existing)
+ 
+         # Remove chat_template if not set (vLLM doesn't accept None)
+         if namespace.chat_template is None:
+diff --git a/packages/prime-rl-configs/src/prime_rl/configs/orchestrator.py b/packages/prime-rl-configs/src/prime_rl/configs/orchestrator.py
+index 2c11a4d..cfd9763 100644
+--- a/packages/prime-rl-configs/src/prime_rl/configs/orchestrator.py
++++ b/packages/prime-rl-configs/src/prime_rl/configs/orchestrator.py
+@@ -531,6 +531,10 @@ class OrchestratorConfig(BaseConfig):
+     max_off_policy_steps: int = Field(8, ge=0)
+     """Maximum policies allowed to generate a single rollout. Rollouts generated more than ``max_off_policy_steps`` ahead of training are discarded. Higher values yield better throughput at the cost of off-policy noise."""
+ 
++    target_lag: int = Field(1, ge=0)
++
++    cap_dispatch_to_batch: bool = False
++
+     bench: bool = False
+     """Benchmark mode. Sets ``max_steps`` to 5 and disables W&B."""
+ 
+diff --git a/packages/prime-rl-configs/src/prime_rl/configs/rl.py b/packages/prime-rl-configs/src/prime_rl/configs/rl.py
+index 55b98ee..dca1eb5 100644
+--- a/packages/prime-rl-configs/src/prime_rl/configs/rl.py
++++ b/packages/prime-rl-configs/src/prime_rl/configs/rl.py
+@@ -309,6 +309,20 @@ class RLConfig(BaseConfig):
+ 
+         return self
+ 
++    @model_validator(mode="after")
++    def validate_ref_kl_estimator(self):
++        if self.trainer.ref_kl_estimator == "reverse_pg":
++            return self
++        distilling = [
++            env.name for env in self.orchestrator.train.env if env.algo is not None and env.algo.type in ("opd", "opsd")
++        ]
++        if distilling or self.orchestrator.algo.type in ("opd", "opsd"):
++            raise ValueError(
++                f"trainer.ref_kl_estimator = '{self.trainer.ref_kl_estimator}' applies to every ref_kl component in the run, "
++                f"including the distillation env(s) {distilling}; keep 'reverse_pg' when a run distills"
++            )
++        return self
++
+     ### Auto-setup shared configs (before sub-config construction)
+ 
+     @model_validator(mode="before")
+@@ -553,6 +567,10 @@ class RLConfig(BaseConfig):
+                 dp = self.inference.parallel.dp
+                 if self.inference.api_server_count < dp and not self.inference.enable_lora:
+                     self.inference.api_server_count = dp
++                if self.weight_broadcast is not None and self.weight_broadcast.type == "nccl":
++                    inference_world_size = dp * self.inference.parallel.tp
++                    self.trainer.weight_broadcast.inference_world_size = inference_world_size
++                    self.orchestrator.weight_broadcast.inference_world_size = inference_world_size
+ 
+         elif self.deployment.type == "multi_node":  # multi-node
+             self.orchestrator.num_train_workers = self.deployment.num_train_nodes * self.deployment.gpus_per_node
+diff --git a/packages/prime-rl-configs/src/prime_rl/configs/trainer.py b/packages/prime-rl-configs/src/prime_rl/configs/trainer.py
+index 8f790c2..66152fd 100644
+--- a/packages/prime-rl-configs/src/prime_rl/configs/trainer.py
++++ b/packages/prime-rl-configs/src/prime_rl/configs/trainer.py
+@@ -519,6 +519,10 @@ class TrainerConfig(BaseConfig):
+     loss: LossConfig = DefaultLossConfig()
+     """Loss config for the rl loss component (see ``setup_rl_loss_fn``). The ce / ref_kl components are fixed and do not read this."""
+ 
++    ref_kl_estimator: Literal["reverse_pg", "k3"] = "reverse_pg"
++
++    rl_loss_aggregation: Literal["token", "sequence"] = "token"
++
+     optim: OptimizerConfig = AdamWConfig()
+ 
+     scheduler: SchedulerConfig = ConstantSchedulerConfig()
+diff --git a/src/prime_rl/orchestrator/algo/__init__.py b/src/prime_rl/orchestrator/algo/__init__.py
+index 8d1baa6..db99f2d 100644
+--- a/src/prime_rl/orchestrator/algo/__init__.py
++++ b/src/prime_rl/orchestrator/algo/__init__.py
+@@ -36,6 +36,7 @@ from prime_rl.orchestrator.algo.opd import OPDAlgorithm
+ from prime_rl.orchestrator.algo.opsd import OPSDAlgorithm
+ from prime_rl.orchestrator.algo.routing import stamp_advantages, stamp_loss_routing
+ from prime_rl.orchestrator.algo.sft import SFTDistillAlgorithm
++from prime_rl.orchestrator.algo.tail_rl import TailRLAlgorithm
+ from prime_rl.orchestrator.types import Rollout
+ 
+ if TYPE_CHECKING:
+@@ -48,6 +49,7 @@ ALGORITHM_CLASSES: dict[str, type[Algorithm]] = {
+     "grpo": GRPOAlgorithm,
+     "echo": EchoAlgorithm,
+     "max_rl": MaxRLAlgorithm,
++    "tail_rl": TailRLAlgorithm,
+     "opd": OPDAlgorithm,
+     "opsd": OPSDAlgorithm,
+     "sft": SFTDistillAlgorithm,
+@@ -74,6 +76,7 @@ __all__ = [
+     "OPSDAlgorithm",
+     "Rollout",
+     "SFTDistillAlgorithm",
++    "TailRLAlgorithm",
+     "build_algorithm",
+     "connect_frozen_pool",
+     "stamp_advantages",
+diff --git a/src/prime_rl/orchestrator/algo/base.py b/src/prime_rl/orchestrator/algo/base.py
+index b12d17d..6cd66ed 100644
+--- a/src/prime_rl/orchestrator/algo/base.py
++++ b/src/prime_rl/orchestrator/algo/base.py
+@@ -43,7 +43,7 @@ from __future__ import annotations
+ from typing import TYPE_CHECKING, ClassVar
+ 
+ from prime_rl.configs.algorithm import ActionLossType, AlgoConfig, FrozenModelConfig
+-from prime_rl.orchestrator.algo.routing import stamp_advantages, stamp_loss_routing
++from prime_rl.orchestrator.algo.routing import restrict_credit_to_last_turn, stamp_advantages, stamp_loss_routing
+ from prime_rl.utils.logger import get_logger
+ 
+ if TYPE_CHECKING:
+@@ -120,6 +120,7 @@ class Algorithm:
+     action_loss_type: ClassVar[ActionLossType] = "rl"
+ 
+     def __init__(self, config: AlgoConfig, policy_pool: InferencePool):
++        self.config = config
+         self.policy_pool = policy_pool
+         self.connected_pools: list[InferencePool] = []  # frozen pools connected in setup(); closed at shutdown
+ 
+@@ -160,6 +161,8 @@ class Algorithm:
+         the records are frozen — groups die at stamping."""
+         await self.score_group(rollouts)
+         for rollout in rollouts:
++            if self.config.credit == "last_turn":
++                restrict_credit_to_last_turn(rollout)
+             stamp_advantages(rollout)
+             for sample in rollout.samples:
+                 stamp_loss_routing(sample, self.action_loss_type)
+diff --git a/src/prime_rl/orchestrator/algo/grpo.py b/src/prime_rl/orchestrator/algo/grpo.py
+index 0b87fa7..ba40859 100644
+--- a/src/prime_rl/orchestrator/algo/grpo.py
++++ b/src/prime_rl/orchestrator/algo/grpo.py
+@@ -1,11 +1,15 @@
+ from __future__ import annotations
+ 
++import asyncio
+ from typing import TYPE_CHECKING
+ 
+ import torch
+ 
+ from prime_rl.configs.algorithm import GRPOAlgoConfig
+ from prime_rl.orchestrator.algo.base import Algorithm
++from prime_rl.orchestrator.algo.routing import carrier_positions, stamp_carrier_kl
++from prime_rl.transport import TrainingSample
++from prime_rl.utils.client import StaticInferencePool
+ 
+ if TYPE_CHECKING:
+     from prime_rl.orchestrator.types import Rollout
+@@ -20,6 +24,57 @@ class GRPOAlgorithm(Algorithm):
+     def __init__(self, config: GRPOAlgoConfig, policy_pool: InferencePool):
+         super().__init__(config, policy_pool)
+         self.length_penalty = config.length_penalty
++        self.reference = config.reference
++        self.carrier_kl = config.carrier_kl
++        self.reference_pool: StaticInferencePool | None = None
++
++    async def setup(self) -> None:
++        if self.carrier_kl <= 0:
++            return
++        assert self.reference is not None
++        pool = await self.connect(self.reference)
++        if not isinstance(pool, StaticInferencePool):
++            raise TypeError("grpo reference must be a static endpoint — prefill scoring needs fixed endpoints")
++        self.reference_pool = pool
++
++    async def score_rollout(self, rollout: Rollout) -> None:
++        if self.carrier_kl <= 0:
++            return
++        pool = self.reference_pool
++        assert pool is not None, "reference pool not connected — Algorithm.setup() must run first"
++        carrier = rollout.info.get("carrier_sample")
++        if carrier is not None:
++            if float(carrier["temperature"]) != 1.0:
++                raise ValueError(
++                    f"carrier sampled at temperature {carrier['temperature']}: the reference is scored at 1.0, "
++                    "so the KL needs the carrier sampled at 1.0"
++                )
++            prompt = list(carrier["prompt_token_ids"])
++            reply = list(carrier["token_ids"])
++            rollout.samples.insert(
++                0,
++                TrainingSample(
++                    token_ids=prompt + reply,
++                    mask=[False] * len(prompt) + [True] * len(reply),
++                    logprobs=[0.0] * len(prompt) + [float(lp) for lp in carrier["logprobs"]],
++                    temperatures=[float(carrier["temperature"])] * (len(prompt) + len(reply)),
++                    env_name=rollout.env_name,
++                ),
++            )
++
++        async def score_sample(sample) -> None:
++            sample.ref_logprobs = await pool.score(list(sample.token_ids))
++
++        carriers = [
++            sample for sample, carrier in zip(rollout.samples, carrier_positions(rollout), strict=True) if any(carrier)
++        ]
++        await asyncio.gather(*(score_sample(sample) for sample in carriers))
++
++    async def finalize_group(self, rollouts: list[Rollout]) -> None:
++        await super().finalize_group(rollouts)
++        if self.carrier_kl > 0:
++            for rollout in rollouts:
++                stamp_carrier_kl(rollout, self.carrier_kl)
+ 
+     async def score_group(self, group: list[Rollout]) -> None:
+         rewards = torch.tensor([rollout.reward for rollout in group], dtype=torch.float32)
+diff --git a/src/prime_rl/orchestrator/algo/routing.py b/src/prime_rl/orchestrator/algo/routing.py
+index 0337fa6..aaa2d6f 100644
+--- a/src/prime_rl/orchestrator/algo/routing.py
++++ b/src/prime_rl/orchestrator/algo/routing.py
+@@ -72,3 +72,52 @@ def stamp_advantages(rollout: Rollout) -> None:
+         num_tokens = len(sample.token_ids)
+         sample.advantages = list(advantages[offset : offset + num_tokens])
+         offset += num_tokens
++
++
++def last_sampled_span_start(mask: list[bool]) -> int:
++    end = len(mask)
++    while end > 0 and not mask[end - 1]:
++        end -= 1
++    start = end
++    while start > 0 and mask[start - 1]:
++        start -= 1
++    return start
++
++
++def carrier_positions(rollout: Rollout) -> list[list[bool]]:
++    trainable = [index for index, sample in enumerate(rollout.samples) if any(sample.mask)]
++    positions = [[False] * len(sample.token_ids) for sample in rollout.samples]
++    if not trainable:
++        return positions
++    for index in trainable[:-1]:
++        positions[index] = list(rollout.samples[index].mask)
++    last = trainable[-1]
++    answer_start = last_sampled_span_start(rollout.samples[last].mask)
++    positions[last] = [trains and i < answer_start for i, trains in enumerate(rollout.samples[last].mask)]
++    return positions
++
++
++def stamp_carrier_kl(rollout: Rollout, coefficient: float) -> None:
++    for sample, carrier in zip(rollout.samples, carrier_positions(rollout), strict=True):
++        if not any(carrier):
++            continue
++        if sample.ref_logprobs is None:
++            raise ValueError(f"carrier tokens without reference logprobs (env '{rollout.env_name}')")
++        sample.ref_kl_weights = [coefficient if is_carrier else 0.0 for is_carrier in carrier]
++
++
++def restrict_credit_to_last_turn(rollout: Rollout) -> None:
++    trainable = [index for index, sample in enumerate(rollout.samples) if any(sample.mask)]
++    if not trainable:
++        return
++    for index in trainable[:-1]:
++        sample = rollout.samples[index]
++        sample.rl_weights = [0.0] * len(sample.token_ids)
++    last = rollout.samples[trainable[-1]]
++    span_start = last_sampled_span_start(last.mask)
++    if any(last.mask[:span_start]):
++        weights = last.rl_weights if last.rl_weights is not None else [1.0] * len(last.token_ids)
++        last.rl_weights = [0.0] * span_start + list(weights[span_start:])
++    if rollout.advantages is not None:
++        start = sum(len(sample.token_ids) for sample in rollout.samples[: trainable[-1]]) + span_start
++        rollout.advantages = [0.0] * start + list(rollout.advantages[start:])
+diff --git a/src/prime_rl/orchestrator/algo/tail_rl.py b/src/prime_rl/orchestrator/algo/tail_rl.py
+new file mode 100644
+index 0000000..94784e6
+--- /dev/null
++++ b/src/prime_rl/orchestrator/algo/tail_rl.py
+@@ -0,0 +1,31 @@
++from __future__ import annotations
++
++from typing import TYPE_CHECKING
++
++import torch
++
++from prime_rl.orchestrator.algo.base import Algorithm
++
++if TYPE_CHECKING:
++    from prime_rl.orchestrator.types import Rollout
++
++
++def tail_weights(rewards: torch.Tensor) -> torch.Tensor:
++    order = torch.argsort(rewards)
++    sorted_rewards = rewards[order]
++    num = rewards.numel()
++    previous = torch.cat([sorted_rewards.new_zeros(1), sorted_rewards[:-1]])
++    clearing = torch.arange(num, 0, -1, dtype=rewards.dtype)
++    sorted_weights = torch.cumsum((sorted_rewards - previous) / clearing, dim=0)
++    weights = torch.empty_like(rewards)
++    weights[order] = sorted_weights
++    return weights
++
++
++class TailRLAlgorithm(Algorithm):
++    async def score_group(self, group: list[Rollout]) -> None:
++        rewards = torch.tensor([rollout.reward for rollout in group], dtype=torch.float32)
++        weights = tail_weights(rewards)
++        advantages = weights - weights.mean()
++        for rollout, advantage in zip(group, advantages.tolist(), strict=True):
++            rollout.assign_advantages(advantage)
+diff --git a/src/prime_rl/orchestrator/dispatcher.py b/src/prime_rl/orchestrator/dispatcher.py
+index 11a1ab4..f6b5135 100644
+--- a/src/prime_rl/orchestrator/dispatcher.py
++++ b/src/prime_rl/orchestrator/dispatcher.py
+@@ -25,8 +25,10 @@
+ from __future__ import annotations
+ 
+ import asyncio
++import time
+ import uuid
+ from collections import Counter, defaultdict
++from collections.abc import Callable
+ from dataclasses import dataclass, field
+ from enum import Enum, auto
+ from typing import Literal
+@@ -169,6 +171,21 @@ class RolloutDispatcher:
+ 
+         self.stopped = asyncio.Event()
+         self.task: asyncio.Task | None = None
++        self.batch_demand: Callable[[], int | None] | None = None
++        self.eval_drain_poll_interval = 0.1
++        self.last_eval_drain_wait_time = 0.0
++        self.num_eval_rollouts_held_for_update = 0
++
++    @property
++    def train_supply(self) -> int:
++        unscheduled = sum(g.rollouts_to_schedule for g in self.groups.values() if g.kind == "train")
++        return self.inflight_train_count + unscheduled + self.out_q.qsize()
++
++    def train_demand_met(self) -> bool:
++        if self.batch_demand is None:
++            return False
++        demand = self.batch_demand()
++        return demand is not None and self.train_supply >= demand
+ 
+     def _train_pool_for(self, env_name: str) -> tuple[InferencePool, str, bool]:
+         """``(pool, model_name, is_live)`` for *train* rollouts of this env —
+@@ -276,6 +293,7 @@ class RolloutDispatcher:
+         the resulting aborts are processed while the engine is still stepping —
+         otherwise the orphaned KV transfers crash the decode engine on resume
+         (see ``WeightWatcher.apply_policy_update``)."""
++        await self.wait_for_eval_drain(step)
+         stale_groups: set[uuid.UUID] = set()
+         cancelled = 0
+         for meta in self.inflight.values():
+@@ -302,6 +320,24 @@ class RolloutDispatcher:
+     async def on_new_version(self, step: int) -> None:
+         """No-op: the dispatcher drains in ``on_version_pending`` (pre-pause)."""
+ 
++    async def wait_for_eval_drain(self, step: int) -> None:
++        if not (self.inflight_eval_count or self.eval_has_work):
++            self.last_eval_drain_wait_time = 0.0
++            return
++        num_inflight, num_queued = self.inflight_eval_count, self.queued_eval_examples
++        get_logger().info(
++            f"Holding the policy update to step {step} until the eval epoch drains "
++            f"({num_inflight} eval rollout(s) in flight, {num_queued} eval example(s) queued)"
++        )
++        started = time.perf_counter()
++        while (self.inflight_eval_count or self.eval_has_work) and not self.stopped.is_set():
++            await asyncio.sleep(self.eval_drain_poll_interval)
++        self.last_eval_drain_wait_time = time.perf_counter() - started
++        self.num_eval_rollouts_held_for_update += num_inflight
++        get_logger().info(
++            f"Eval epoch drained after {self.last_eval_drain_wait_time:.1f}s; updating the policy to step {step}"
++        )
++
+     async def fill_inflight(self) -> None:
+         """Schedule new rollouts up to ``max_inflight``, honoring
+         ``self.mode``. Eval scheduling ignores the orchestrator's dispatch
+@@ -358,6 +394,8 @@ class RolloutDispatcher:
+             if cost <= self.available_permits:
+                 return await self.schedule_group_rollout(gid, group)
+ 
++        if kind == "train" and self.train_demand_met():
++            return False
+         fresh = self.next_fresh_group(kind, envs)
+         if fresh is None:
+             return False
+@@ -680,4 +718,6 @@ class RolloutDispatcher:
+             "dispatcher/groups_in_flight": float(len(self.groups)),
+             "dispatcher/off_policy_level_max": float(self.max_off_policy_level),
+             "dispatcher/off_policy_level_mean": self.mean_off_policy_level,
++            "dispatcher/eval_drain_wait_time": self.last_eval_drain_wait_time,
++            "dispatcher/eval_rollouts_held_for_update": float(self.num_eval_rollouts_held_for_update),
+         }
+diff --git a/src/prime_rl/orchestrator/filters.py b/src/prime_rl/orchestrator/filters.py
+index ad023fd..f76751d 100644
+--- a/src/prime_rl/orchestrator/filters.py
++++ b/src/prime_rl/orchestrator/filters.py
+@@ -105,9 +105,11 @@ class ZeroAdvantageFilter:
+     enforce: bool = True
+ 
+     def check(self, rollout: Rollout) -> FilterResult:
+-        if rollout.advantages is not None and all(a == 0.0 for a in rollout.advantages):
+-            return FilterResult(detected=True)
+-        return FilterResult(detected=False)
++        if rollout.advantages is None or any(a != 0.0 for a in rollout.advantages):
++            return FilterResult(detected=False)
++        if any(sample.ref_kl_weights and any(w != 0.0 for w in sample.ref_kl_weights) for sample in rollout.samples):
++            return FilterResult(detected=False)
++        return FilterResult(detected=True)
+ 
+ 
+ def setup_filter(config: FilterConfig, vocab_size: int) -> RolloutFilter:
+diff --git a/src/prime_rl/orchestrator/orchestrator.py b/src/prime_rl/orchestrator/orchestrator.py
+index 05dc535..1350731 100644
+--- a/src/prime_rl/orchestrator/orchestrator.py
++++ b/src/prime_rl/orchestrator/orchestrator.py
+@@ -96,11 +96,6 @@ SHUTDOWN_TIMEOUT_S = 300
+ # dataset; fail loudly instead of spinning
+ MAX_CONSECUTIVE_EMPTY_BATCHES = 10
+ 
+-# Maximum batches the orchestrator may run ahead of the trainer. The
+-# dispatcher is paused via ``update_dispatch_gate`` once this is exceeded;
+-# resumed when the watcher advances ``policy.version``.
+-TARGET_LAG = 1
+-
+ # Default wait for the trainer's startup weight broadcast when no ckpt block
+ # configures ``wait_for_weights_timeout`` (e.g. a from-scratch run). The
+ # broadcast is always coming, so wait rather than fail immediately.
+@@ -173,6 +168,7 @@ class Orchestrator:
+         self.consecutive_empty_batches = 0
+         self.gate_closed_at = None
+         self.wait_for_policy_time = 0.0
++        self.updating_weights = False
+         self.component_tasks = []
+ 
+         # Optional attributes — ``setup()`` populates them when the relevant
+@@ -378,12 +374,14 @@ class Orchestrator:
+             pre_filters=pre_filters,
+             post_filters=post_filters,
+         )
++        if config.cap_dispatch_to_batch:
++            self.dispatcher.batch_demand = self.train_sink.batch_demand
+         self.eval_sink = EvalSink(eval_envs=self.eval_envs) if self.eval_envs is not None else None
+         self.watcher = WeightWatcher(
+             config,
+             policy=self.policy,
+             inference=self.policy_inference,
+-            observers=[self.dispatcher, self],
++            observers=[self, self.dispatcher],
+             lora_name=self.lora_name,
+             ckpt_step=self.policy.version,
+         )
+@@ -514,6 +512,17 @@ class Orchestrator:
+         config = self.config
+         step = self.progress.step
+ 
++        lags = [(step - 1) - r.policy_version for r in batch.cohort if not r.has_error]
++        num_stale = sum(1 for lag in lags if lag > 0)
++        lag_mean = sum(lags) / len(lags) if lags else 0.0
++        lag_max = max(lags, default=0)
++        if lag_max > config.max_off_policy_steps:
++            get_logger().warning(
++                f"Train step {step} trains {num_stale}/{len(lags)} shipped rollout(s) generated up to {lag_max} "
++                f"policy version(s) behind v{step - 1} (max_off_policy_steps={config.max_off_policy_steps}); "
++                "queued overflow and the survivors of cancelled groups are not aged"
++            )
++
+         # Sink-to-sink cycle time — the actual time between batches, not
+         # including the orchestrator's ship I/O (overlapped with the
+         # dispatcher producing the next batch)
+@@ -556,13 +565,13 @@ class Orchestrator:
+         # at ship time; the full arrival window already streamed into ``all`` on arrival.
+         # to_record drops the per-node training tensors — they're for training, not the rollout
+         # record, and can't round-trip json (raw numpy bytes).
++        self.progress.step += 1
++        self.update_dispatch_gate()
+         effective = batch.rollouts.effective
+         records = [r.to_record() for r in effective]
+         await asyncio.to_thread(save_rollouts, records, get_trace_path(config.output_dir, step, "train", "effective"))
+ 
+         await self.sender.send(TrainingBatch(examples=batch.samples, step=step))
+-        self.progress.step += 1
+-        self.update_dispatch_gate()
+         # Checkpoint the step we just shipped (resume point: continue at step + 1).
+         save_ckpt_time = await self.maybe_save_ckpt(step)
+         trim_process_memory()
+@@ -596,6 +605,9 @@ class Orchestrator:
+             "time/step": step_time,
+             "time/save_ckpt": save_ckpt_time,
+             "time/wait_for_policy": self.wait_for_policy_time,
++            "batch/generation_lag_mean": lag_mean,
++            "batch/generation_lag_max": float(lag_max),
++            "batch/off_policy_frac": num_stale / len(lags) if lags else 0.0,
+             "step": step,
+         }
+         for env_name, env_pool in batch.rollouts.by_env().items():
+@@ -841,7 +853,7 @@ class Orchestrator:
+         )
+         gate = self.dispatcher.dispatch_allowed
+         was_set = gate.is_set()
+-        if lead > TARGET_LAG and not building_final_batch_nccl:
++        if self.updating_weights or (lead > self.config.target_lag and not building_final_batch_nccl):
+             if was_set:
+                 get_logger().info(
+                     "Pausing dispatcher to prevent orchestrator from racing from trainer. Waiting for new policy..."
+@@ -857,12 +869,13 @@ class Orchestrator:
+             gate.set()
+ 
+     async def on_version_pending(self, step: int) -> None:
+-        """No-op: the dispatch gate is re-evaluated in ``on_new_version`` once
+-        the new policy version is live."""
++        self.updating_weights = True
++        self.update_dispatch_gate()
+ 
+     async def on_new_version(self, step: int) -> None:
+         """``VersionObserver`` hook: the watcher just advanced ``policy.version``;
+         re-evaluate the dispatch gate (may resume if the trainer caught up)."""
++        self.updating_weights = False
+         self.update_dispatch_gate()
+ 
+     async def stop(self) -> None:
+diff --git a/src/prime_rl/orchestrator/patches.py b/src/prime_rl/orchestrator/patches.py
+index 9f0d0f7..57341d0 100644
+--- a/src/prime_rl/orchestrator/patches.py
++++ b/src/prime_rl/orchestrator/patches.py
+@@ -113,3 +113,67 @@ def monkey_patch_chat_completion_logprobs():
+     # Patch OAI types
+     openai.types.chat.chat_completion.Choice = ChoiceAny
+     openai.types.chat.chat_completion.ChatCompletion = ModdedChatCompletion
++
++
++def monkey_patch_default_renderer_strip_content():
++    from renderers.default import DefaultRenderer
++
++    original = DefaultRenderer.parse_response
++    if getattr(original, "_prime_rl_strips_content", False):
++        return
++
++    def parse_response(self, *args, **kwargs):
++        parsed = original(self, *args, **kwargs)
++        if (self.config.model_extra or {}).get("strip_content"):
++            parsed.content = parsed.content.strip()
++        return parsed
++
++    parse_response._prime_rl_strips_content = True
++    DefaultRenderer.parse_response = parse_response
++
++
++def monkey_patch_shared_user_server():
++    import asyncio
++    import contextlib
++
++    import verifiers.v1.rollout as rollout_module
++    from verifiers.v1.mcp import launch
++
++    original = rollout_module.serve_user
++    if getattr(original, "_prime_rl_shared_user", False):
++        return
++
++    urls: dict[str, str] = {}
++    stack = contextlib.AsyncExitStack()
++    locks: dict[int, asyncio.Lock] = {}
++
++    async def shared_url(user) -> str:
++        key = f"{type(user).__module__}.{type(user).__qualname__}:{user.config.model_dump_json()}"
++        if key not in urls:
++            loop_lock = locks.setdefault(id(asyncio.get_running_loop()), asyncio.Lock())
++            async with loop_lock:
++                if key not in urls:
++                    urls[key] = await stack.enter_async_context(launch.serve(user, None, for_host=True))
++        return urls[key]
++
++    @contextlib.asynccontextmanager
++    async def serve_user(user, harness_runtime=None, *, state_port=None, state_secret="", state_base=None):
++        if user is None or not getattr(user.config, "shared", False):
++            async with original(
++                user,
++                harness_runtime,
++                state_port=state_port,
++                state_secret=state_secret,
++                state_base=state_base,
++            ) as respond:
++                yield respond
++            return
++        base = state_base
++        if base is None and state_port is not None:
++            base = f"http://127.0.0.1:{state_port}"
++        url = launch._shared_url_for_rollout(await shared_url(user), base, state_secret)
++        async with launch.connect_user(url) as respond:
++            yield respond
++
++    serve_user._prime_rl_shared_user = True
++    rollout_module.serve_user = serve_user
+diff --git a/src/prime_rl/orchestrator/train_sink.py b/src/prime_rl/orchestrator/train_sink.py
+index 310e3ae..fac6e4f 100644
+--- a/src/prime_rl/orchestrator/train_sink.py
++++ b/src/prime_rl/orchestrator/train_sink.py
+@@ -123,6 +123,12 @@ class TrainSink:
+         (non-group-scoring envs) — buffered in the sink ahead of the batch."""
+         return sum(len(group) for group in self.in_progress_groups())
+ 
++    def batch_demand(self) -> int | None:
++        if self.batch_size is None:
++            return None
++        arrived = sum(len(group) for group in self.pending_groups.values())
++        return self.batch_size - len(self.pending_batch) - arrived
++
+     def pending_batch_by_env(self) -> dict[str, int]:
+         """Per-env breakdown of ``batch_progress()`` (``pending_batch`` only);
+         values sum to the aggregate."""
+@@ -217,7 +223,8 @@ class TrainSink:
+         temperature = env.sampling_args["temperature"]
+         for r in survivors:
+             for sample in r.samples:
+-                sample.temperatures = [temperature] * len(sample.token_ids)
++                if not sample.temperatures:
++                    sample.temperatures = [temperature] * len(sample.token_ids)
+ 
+         if self.pre_filters:
+             apply_filters(self.pre_filters, survivors)
+@@ -289,7 +296,7 @@ class TrainSink:
+         rollouts = self.pending_rollouts
+         if samples:
+             self.pending_rollouts = TrainRollouts()
+-        return TrainBatch(rollouts=rollouts, samples=samples)
++        return TrainBatch(rollouts=rollouts, samples=samples, cohort=list(cohort))
+ 
+     def reset_pre_filter_stats(self) -> None:
+         self.pre_filter_seen = 0
+diff --git a/src/prime_rl/orchestrator/types.py b/src/prime_rl/orchestrator/types.py
+index 3f55641..fbcdc2f 100644
+--- a/src/prime_rl/orchestrator/types.py
++++ b/src/prime_rl/orchestrator/types.py
+@@ -3,7 +3,7 @@
+ from __future__ import annotations
+ 
+ import uuid
+-from dataclasses import dataclass
++from dataclasses import dataclass, field
+ from typing import TYPE_CHECKING, Generic, Literal, Protocol
+ 
+ import verifiers.v1 as vf
+@@ -156,6 +156,7 @@ class TrainBatch:
+ 
+     rollouts: TrainRollouts
+     samples: list[TrainingSample]
++    cohort: list[Rollout] = field(default_factory=list)
+ 
+ 
+ @dataclass
+diff --git a/src/prime_rl/orchestrator/utils.py b/src/prime_rl/orchestrator/utils.py
+index 2b23369..f700df4 100644
+--- a/src/prime_rl/orchestrator/utils.py
++++ b/src/prime_rl/orchestrator/utils.py
+@@ -10,6 +10,7 @@ from pathlib import Path
+ import orjson
+ 
+ from prime_rl.configs.orchestrator import OrchestratorConfig
++from prime_rl.orchestrator.patches import monkey_patch_default_renderer_strip_content, monkey_patch_shared_user_server
+ from prime_rl.utils.client import setup_inference_pool
+ from prime_rl.utils.logger import InterceptHandler, get_logger, setup_logger
+ from prime_rl.utils.utils import (
+@@ -33,6 +34,7 @@ async def setup_policy_inference_pool(*, config: OrchestratorConfig, tokenizer):
+ 
+     client_config = config.model.client
+     model_name = config.model.name
++    monkey_patch_default_renderer_strip_content()
+     renderer = create_renderer(tokenizer, config.renderer)
+     get_logger().info(f"Initialized {type(renderer).__name__} for {model_name}")
+     if config.any_policy_sourced:
+@@ -77,6 +79,8 @@ def setup_env_server_logging(log_level: str, json_logging: bool = False) -> None
+     their per-rollout logs."""
+     setup_logger(log_level, json_logging=json_logging)
+     intercept_vf_logging(logger="verifiers.v1", level=log_level)
++    monkey_patch_default_renderer_strip_content()
++    monkey_patch_shared_user_server()
+ 
+ 
+ def set_default_executor(max_workers: int = 64) -> None:
+diff --git a/src/prime_rl/trainer/model.py b/src/prime_rl/trainer/model.py
+index a37aca1..f8a1454 100644
+--- a/src/prime_rl/trainer/model.py
++++ b/src/prime_rl/trainer/model.py
+@@ -1,8 +1,12 @@
++import collections
++import copy
++import functools
++import json
+ import logging
+ import os
+ import time
+ from pathlib import Path
+-from typing import cast
++from typing import Any, cast
+ 
+ # Disable transformers hub kernel interception by default. The `kernels` package, when installed,
+ # causes transformers to auto-replace modules (e.g. mamba-ssm) with hub kernel versions that may
+@@ -14,12 +18,14 @@ import torch._dynamo
+ import torch.nn as nn
+ from huggingface_hub import snapshot_download
+ from jaxtyping import Int
++from safetensors import safe_open
+ from torch import Tensor
+ from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import checkpoint_wrapper
+ from torch.distributed.checkpoint.hf_storage import HuggingFaceStorageReader
+ from torch.distributed.checkpoint.state_dict_loader import load as dcp_load
+ from torch.distributed.device_mesh import DeviceMesh
+ from torch.distributed.fsdp import CPUOffloadPolicy, FSDPModule, MixedPrecisionPolicy, OffloadPolicy, fully_shard
++from torch.distributed.tensor import DTensor
+ from torch.distributed.tensor.parallel import parallelize_module
+ from torchtitan.distributed.expert_parallel import ExpertParallel
+ from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer, GenerationConfig, PretrainedConfig
+@@ -430,10 +436,11 @@ def configure_moe_ep_backend(model: nn.Module, config: ModelConfig) -> None:
+         configure_num_sms(config.deepep_num_sms)
+     language_model = get_language_model(model)
+     for transformer_block in language_model.layers:
+-        if not isinstance(transformer_block.mlp, (MoE, LatentMoE)):
++        block_mlp = getattr(transformer_block, "mlp", None)
++        if not isinstance(block_mlp, (MoE, LatentMoE)):
+             continue
+-        transformer_block.mlp.set_ep_comm_backend(backend)
+-        transformer_block.mlp.set_deepep_token_chunk_size(config.deepep_token_chunk_size)
++        block_mlp.set_ep_comm_backend(backend)
++        block_mlp.set_deepep_token_chunk_size(config.deepep_token_chunk_size)
+ 
+ 
+ def get_load_balance_stats(
+@@ -758,6 +765,12 @@ def setup_fsdp(model: nn.Module, config: ModelConfig, parallel_dims: ParallelDim
+ 
+     transformer_blocks = list(language_model.layers)
+     next_transformer_blocks = transformer_blocks[1:] + [None]
++    final_norm = (
++        getattr(language_model, "norm", None)
++        or getattr(language_model, "norm_f", None)
++        or getattr(language_model, "embedding_norm", None)
++    )
++    lm_head = getattr(model, "lm_head", None)
+ 
+     embed_module = getattr(language_model, "embed_tokens", None) or getattr(language_model, "embeddings", None)
+     if embed_module is not None and len(language_model.layers) > 0:
+@@ -775,17 +788,17 @@ def setup_fsdp(model: nn.Module, config: ModelConfig, parallel_dims: ParallelDim
+                 transformer_block.set_modules_to_forward_prefetch(prefetch_modules)
+             else:
+                 transformer_block.set_modules_to_forward_prefetch([next_transformer_block])
+-        elif language_model.norm is not None and model.lm_head is not None:
++        elif final_norm is not None and lm_head is not None:
+             if shard_norm_and_lm_head:
+-                transformer_block.set_modules_to_forward_prefetch([language_model.norm, model.lm_head])
++                transformer_block.set_modules_to_forward_prefetch([final_norm, lm_head])
+ 
+     # backward
+     reversed_transformer_blocks = list(reversed(language_model.layers))
+     prev_transformer_blocks = reversed_transformer_blocks[1:] + [None]
+ 
+-    if language_model.norm is not None and model.lm_head is not None and len(language_model.layers) > 0:
++    if final_norm is not None and lm_head is not None and len(language_model.layers) > 0:
+         if shard_norm_and_lm_head:
+-            model.lm_head.set_modules_to_backward_prefetch([reversed_transformer_blocks[0]])
++            lm_head.set_modules_to_backward_prefetch([reversed_transformer_blocks[0]])
+         else:
+             model.set_modules_to_backward_prefetch([reversed_transformer_blocks[0]])
+ 
+@@ -804,6 +817,104 @@ def setup_fsdp(model: nn.Module, config: ModelConfig, parallel_dims: ParallelDim
+                 transformer_block.set_modules_to_backward_prefetch([embed_module])
+ 
+ 
++def _hub_weight_map(checkpoint: Path) -> dict[str, Path]:
++    index = checkpoint / "model.safetensors.index.json"
++    if index.exists():
++        return {key: checkpoint / shard for key, shard in json.loads(index.read_text())["weight_map"].items()}
++    weight_map = {}
++    for shard in sorted(checkpoint.glob("*.safetensors")):
++        with safe_open(shard, framework="pt") as handle:
++            for key in handle.keys():
++                weight_map[key] = shard
++    return weight_map
++
++
++def _local_view(tensor: Tensor) -> tuple[Tensor, tuple[int, ...]]:
++    if not isinstance(tensor, DTensor):
++        return tensor, (0,) * tensor.dim()
++    from torch.distributed.tensor._utils import compute_local_shape_and_global_offset
++
++    shape, offset = compute_local_shape_and_global_offset(tensor.shape, tensor.device_mesh, tensor.placements)
++    local = tensor.to_local()
++    if tuple(local.shape) != tuple(shape):
++        raise ValueError(f"local shard is {tuple(local.shape)} where the placement says {tuple(shape)}")
++    return local, tuple(offset)
++
++
++def hub_layout_transforms(model: nn.Module) -> list:
++    from transformers.conversion_mapping import get_model_conversion_mapping
++    from transformers.core_model_loading import PrefixChange
++
++    mapping = get_model_conversion_mapping(cast(Any, model), add_legacy=False)
++    return [transform for transform in mapping if not isinstance(transform, PrefixChange)]
++
++
++def load_hub_state_dict(model: nn.Module, state_dict: dict[str, Tensor], checkpoint: Path) -> None:
++    from transformers.core_model_loading import (
++        MergeModulelist,
++        WeightConverter,
++        WeightRenaming,
++        dot_natural_key,
++        rename_source_key,
++    )
++
++    weight_map = _hub_weight_map(checkpoint)
++    handles: dict[Path, Any] = {}
++
++    def shard(key: str):
++        path = weight_map[key]
++        if path not in handles:
++            handles[path] = safe_open(path, framework="pt")
++        return handles[path]
++
++    transforms = hub_layout_transforms(model)
++    renamings = [t for t in transforms if isinstance(t, WeightRenaming)]
++    converters = [t for t in transforms if isinstance(t, WeightConverter)]
++    converter_of = {pattern: converter for converter in converters for pattern in converter.source_patterns}
++    sources: dict[str, list[tuple[str, str | None]]] = collections.defaultdict(list)
++    for hub_key in sorted(weight_map, key=dot_natural_key):
++        model_key, pattern = rename_source_key(hub_key, renamings, converters)
++        sources[model_key].append((hub_key, pattern))
++    missing = sorted(set(state_dict) - set(sources))
++    if missing:
++        raise ValueError(f"{checkpoint} holds no weights for {missing[:5]}")
++
++    with torch.no_grad():
++        for key, tensor in state_dict.items():
++            local, offset = _local_view(tensor)
++            if local.numel() == 0:
++                continue
++            region = tuple(slice(start, start + size) for start, size in zip(offset, local.shape, strict=True))
++            entries = sources[key]
++            if entries[0][1] is None:
++                ((hub_key, _),) = entries
++                value = shard(hub_key).get_slice(hub_key)[region]
++            else:
++                converter = copy.deepcopy(converter_of[entries[0][1]])
++                first = converter.operations[0]
++                whole_experts = (
++                    isinstance(first, MergeModulelist)
++                    and first.dim == 0
++                    and all(start == 0 for start in offset[1:])
++                    and tuple(local.shape[1:]) == tuple(tensor.shape[1:])
++                )
++                rows = region[0] if whole_experts else slice(None)
++                for pattern in converter.source_patterns:
++                    hub_keys = [hub_key for hub_key, matched in entries if matched == pattern]
++                    if isinstance(first, MergeModulelist) and len(hub_keys) != tensor.shape[first.dim]:
++                        raise ValueError(
++                            f"{checkpoint} stores {len(hub_keys)} tensors matching {pattern} for {key}, "
++                            f"which stacks {tensor.shape[first.dim]}"
++                        )
++                    for hub_key in hub_keys[rows]:
++                        reader = functools.partial(shard(hub_key).get_tensor, hub_key)
++                        converter.add_tensor(key, hub_key, pattern, reader)
++                assembled = converter.convert(key, model=model, config=model.config)[key]
++                assembled = assembled[0] if isinstance(assembled, list) else assembled
++                value = assembled if whole_experts else assembled[region]
++            local.copy_(value.to(dtype=local.dtype))
++
++
+ def load_dcp_from_hf(model: nn.Module, config: ModelConfig, parallel_dims: ParallelDims):
+     device = "cpu" if config.fsdp_cpu_offload else "cuda"
+     model.to_empty(device=device)
+@@ -876,10 +987,13 @@ def load_dcp_from_hf(model: nn.Module, config: ModelConfig, parallel_dims: Paral
+     state_dict = strip_lora_from_state_dict(state_dict)
+     if model.config.tie_word_embeddings:
+         del state_dict["lm_head.weight"]
+-    dcp_load(
+-        state_dict,
+-        storage_reader=HuggingFaceStorageReader(path=snapshot_path.as_posix()),
+-    )
++    if not isinstance(model, PreTrainedModelPrimeRL) and hub_layout_transforms(model):
++        load_hub_state_dict(model, state_dict, snapshot_path)
++    else:
++        dcp_load(
++            state_dict,
++            storage_reader=HuggingFaceStorageReader(path=snapshot_path.as_posix()),
++        )
+     # Restore weight tying broken by to_empty() for HF models
+     if not isinstance(model, PreTrainedModelPrimeRL) and model.config.tie_word_embeddings:
+         model.tie_weights()
+@@ -903,6 +1017,14 @@ def load_dcp_from_hf(model: nn.Module, config: ModelConfig, parallel_dims: Paral
+     logger.debug(f"Loaded weights using HF DCP in {time.perf_counter() - load_dcp_start_time:.2f} seconds")
+ 
+ 
++def _rotary_embeddings(model: nn.Module) -> list[nn.Module]:
++    return [
++        module
++        for module in model.modules()
++        if any(name.endswith("inv_freq") for name, _ in module.named_buffers(recurse=False))
++    ]
++
++
+ def can_reinit_empty_buffers(model: nn.Module):
+     """Whether the model will be loaded correctly by load_dcp_from_hf.
+ 
+@@ -913,7 +1035,15 @@ def can_reinit_empty_buffers(model: nn.Module):
+     if isinstance(model, PreTrainedModelPrimeRL):
+         return True
+ 
+-    buffer_names = [name for name, _ in model.named_buffers()]
++    stored = set(model.state_dict().keys())
++    rotary_ids = set(map(id, _rotary_embeddings(model)))
++    buffer_names = [
++        f"{prefix}.{name}" if prefix else name
++        for prefix, module in model.named_modules()
++        if id(module) not in rotary_ids
++        for name, _ in module.named_buffers(recurse=False)
++        if (f"{prefix}.{name}" if prefix else name) not in stored
++    ]
+ 
+     # TT MoE buffers
+     buffer_names = [
+@@ -924,18 +1054,10 @@ def can_reinit_empty_buffers(model: nn.Module):
+     buffer_names = [
+         name for name in buffer_names if not (name.startswith("model.layers.") and name.endswith("mlp.expert_bias"))
+     ]
+-    # HF standard transformer model
+-    if len(buffer_names) == 1 and buffer_names[0] == "model.rotary_emb.inv_freq":
++    if not buffer_names:
+         return True
+ 
+-    # GPT-OSS (has original_inv_freq alongside inv_freq from dynamic rope scaling)
+-    gpt_oss_buffers = {"model.rotary_emb.inv_freq", "model.rotary_emb.original_inv_freq"}
+-    if set(buffer_names) == gpt_oss_buffers:
+-        return True
+-
+-    # Gemma3 model (has embed_scale and local rotary emb)
+-    gemma3_buffers = {"model.embed_tokens.embed_scale", "model.rotary_emb.inv_freq", "model.rotary_emb_local.inv_freq"}
+-    if set(buffer_names) == gemma3_buffers:
++    if buffer_names == ["model.embed_tokens.embed_scale"]:
+         return True
+ 
+     get_logger().warning(f"Model cannot be loaded using meta device because of buffers: {buffer_names}")
+@@ -943,33 +1065,15 @@ def can_reinit_empty_buffers(model: nn.Module):
+ 
+ 
+ def fix_model_post_empty(model: nn.Module):
+-    buffer_names = [name for name, _ in model.named_buffers()]
+-    # HF standard transformer model
+-    if "model.rotary_emb.inv_freq" in buffer_names:
+-        rotary_emb = model.model.rotary_emb
+-        if hasattr(rotary_emb, "rope_init_fn"):
+-            rope_init_fn = rotary_emb.rope_init_fn
+-        else:
+-            # GPT-OSS stores rope_init_fn only as a local in __init__; re-derive it
+-            from transformers.modeling_rope_utils import ROPE_INIT_FUNCTIONS
+-
+-            rope_init_fn = (
+-                ROPE_INIT_FUNCTIONS[rotary_emb.rope_type]
+-                if rotary_emb.rope_type != "default"
+-                else rotary_emb.compute_default_rope_parameters
+-            )
+-        inv_freq, rotary_emb.attention_scaling = rope_init_fn(rotary_emb.config, rotary_emb.inv_freq.device)
+-        rotary_emb.inv_freq.copy_(inv_freq)
+-        if "model.rotary_emb.original_inv_freq" in buffer_names:
+-            rotary_emb.original_inv_freq.copy_(inv_freq)
+-    # Gemma3 local rotary emb
+-    if "model.rotary_emb_local.inv_freq" in buffer_names:
+-        rotary_emb_local = model.model.rotary_emb_local
+-        inv_freq_local, rotary_emb_local.attention_scaling = rotary_emb_local.rope_init_fn(
+-            rotary_emb_local.config, rotary_emb_local.inv_freq.device
+-        )
+-        rotary_emb_local.inv_freq.copy_(inv_freq_local)
++    for rotary_emb in _rotary_embeddings(model):
++        buffers = dict(rotary_emb.named_buffers(recurse=False))
++        fresh = type(rotary_emb)(rotary_emb.config, device=next(iter(buffers.values())).device)
++        for name, value in fresh.named_buffers(recurse=False):
++            buffers[name].copy_(value)
++        if hasattr(fresh, "attention_scaling"):
++            rotary_emb.attention_scaling = fresh.attention_scaling
+     # Gemma3 embed_scale (scalar computed from hidden_size)
++    buffer_names = [name for name, _ in model.named_buffers()]
+     if "model.embed_tokens.embed_scale" in buffer_names:
+         embed_scale = model.config.hidden_size**0.5
+         model.model.embed_tokens.embed_scale.fill_(embed_scale)
+diff --git a/src/prime_rl/trainer/models/layers/lm_head.py b/src/prime_rl/trainer/models/layers/lm_head.py
+index a635afb..21d3afb 100644
+--- a/src/prime_rl/trainer/models/layers/lm_head.py
++++ b/src/prime_rl/trainer/models/layers/lm_head.py
+@@ -371,10 +371,12 @@ def _patch_model_forward(model: nn.Module) -> None:
+         )
+         hidden_states = outputs.last_hidden_state
+ 
+-        # Slice hidden states for logits_to_keep
+-        slice_indices = (
+-            slice(-logits_to_keep, None) if isinstance(logits_to_keep, int) and logits_to_keep > 0 else slice(None)
+-        )
++        if isinstance(logits_to_keep, torch.Tensor):
++            slice_indices = logits_to_keep
++        elif isinstance(logits_to_keep, int) and logits_to_keep > 0:
++            slice_indices = slice(-logits_to_keep, None)
++        else:
++            slice_indices = slice(None)
+ 
+         # Pass through the wrapped lm_head
+         return self.lm_head(
+diff --git a/src/prime_rl/trainer/models/qwen3_5_moe/modeling_qwen3_5_moe.py b/src/prime_rl/trainer/models/qwen3_5_moe/modeling_qwen3_5_moe.py
+index 843a82a..d2e94ee 100644
+--- a/src/prime_rl/trainer/models/qwen3_5_moe/modeling_qwen3_5_moe.py
++++ b/src/prime_rl/trainer/models/qwen3_5_moe/modeling_qwen3_5_moe.py
+@@ -232,9 +232,13 @@ class Qwen3_5MoeGatedDeltaNet(nn.Module):
+         self.in_proj_b = nn.Linear(self.hidden_size, self.num_v_heads, bias=False)
+         self.in_proj_a = nn.Linear(self.hidden_size, self.num_v_heads, bias=False)
+ 
+-        # Select best available kernel
++        if chunk_gated_delta_rule is None:
++            raise RuntimeError(
++                "GatedDeltaNet requires fla (flash-linear-attention) for its fused varlen conv "
++                "and chunk_gated_delta_rule kernels; install it in this environment"
++            )
+         self._causal_conv1d_fn = causal_conv1d_fn
+-        self._chunk_gated_delta_rule = chunk_gated_delta_rule or torch_chunk_gated_delta_rule
++        self._chunk_gated_delta_rule = chunk_gated_delta_rule
+ 
+     def _build_cp_context(self) -> "FLACPContext | None":
+         """Build fla CP context from the full pre-shard document boundaries."""
+@@ -294,14 +298,14 @@ class Qwen3_5MoeGatedDeltaNet(nn.Module):
+                 seq_idx=seq_idx,
+             )
+         elif cu_seqlens is not None:
+-            cu = cu_seqlens.tolist()
+-            conv_outs = []
+-            for i in range(len(cu) - 1):
+-                s, e = cu[i], cu[i + 1]
+-                if s == e:
+-                    continue
+-                conv_outs.append(self.conv1d(mixed_qkv[:, :, s:e])[:, :, : e - s])
+-            mixed_qkv = F.silu(torch.cat(conv_outs, dim=-1))
++            conv_out, _ = fla_causal_conv1d(
++                x=mixed_qkv.transpose(1, 2),
++                weight=self.conv1d.weight.squeeze(1),
++                bias=self.conv1d.bias,
++                activation=self.activation,
++                cu_seqlens=cu_seqlens,
++            )
++            mixed_qkv = conv_out.transpose(1, 2)
+         else:
+             mixed_qkv = F.silu(self.conv1d(mixed_qkv)[:, :, :seq_len])
+ 
+diff --git a/src/prime_rl/trainer/optim.py b/src/prime_rl/trainer/optim.py
+index cb0b3d2..3d5230a 100644
+--- a/src/prime_rl/trainer/optim.py
++++ b/src/prime_rl/trainer/optim.py
+@@ -160,6 +160,7 @@ def _create_optimizer(
+                 lr=lr,
+                 weight_decay=config.weight_decay,
+                 betas=(config.betas1, config.betas2),
++                fused=True,
+             )
+         case "muon":
+             return _create_muon_optimizer(config, named_params, parallel_dims, lr)
+diff --git a/src/prime_rl/trainer/rl/loss.py b/src/prime_rl/trainer/rl/loss.py
+index 7d9dcce..a83e2ce 100644
+--- a/src/prime_rl/trainer/rl/loss.py
++++ b/src/prime_rl/trainer/rl/loss.py
+@@ -243,6 +243,33 @@ def ref_kl_loss_fn(inputs: LossInputs) -> LossOutputs:
+     return LossOutputs(loss=loss, metrics=metrics)
+ 
+ 
++def k3_ref_kl_loss_fn(inputs: LossInputs) -> LossOutputs:
++    trainer_logprobs = inputs.trainer_logprobs
++    ref_logprobs = inputs.ref_logprobs
++    loss_mask = inputs.loss_mask
++    if ref_logprobs is None:
++        raise ValueError("the k3 ref_kl estimator requires ref_logprobs — the algorithm must score a reference model.")
++    log_ratio = torch.clamp(ref_logprobs - trainer_logprobs, min=-20.0, max=20.0)
++    k3 = torch.clamp(torch.exp(log_ratio) - log_ratio - 1, min=0.0, max=10.0)
++    per_token_loss = loss_mask * k3
++    if inputs.loss_weights is not None:
++        per_token_loss = per_token_loss * inputs.loss_weights
++    loss = per_token_loss.sum()
++    metrics = {
++        "ref_kl/k3": _safe_mean(k3, loss_mask),
++        "ref_kl/log_ratio": _safe_mean(log_ratio, loss_mask),
++    }
++    return LossOutputs(loss=loss, metrics=metrics)
++
++
++def setup_ref_kl_loss_fn(estimator: str) -> LossFn:
++    if estimator == "k3":
++        return k3_ref_kl_loss_fn
++    if estimator == "reverse_pg":
++        return ref_kl_loss_fn
++    raise ValueError(f"unknown ref_kl estimator {estimator!r}")
++
++
+ def ce_loss_fn(inputs: LossInputs) -> LossOutputs:
+     """Cross-entropy loss type: masked negative log-likelihood (SFT / ECHO
+     observation prediction)."""
+@@ -295,6 +322,8 @@ def compute_loss(
+     rl_scale: int,
+     ce_scale: int,
+     ref_kl_scale: int,
++    ref_kl_fn: LossFn = ref_kl_loss_fn,
++    rl_aggregation: str = "token",
+ ) -> tuple[Float[Tensor, ""], dict[str, Any]]:
+     """
+     Compute loss for packed sequences (batch size = 1, multiple sequences packed along sequence dimension).
+@@ -376,12 +405,16 @@ def compute_loss(
+                 loss_weights=weights,
+             )
+ 
+-        if rl_w is None:
++        rl_mask = mask if rl_w is None else mask & (rl_w != 0)
++        if rl_aggregation == "sequence":
++            num_rl_tokens = rl_mask.sum()
++            if bool(num_rl_tokens > 0):
++                base = torch.ones_like(t_logp) if rl_w is None else rl_w
++                rl_loss = rl_loss + run_loss_fn(rl_loss_fn, make_inputs(rl_mask, base / num_rl_tokens))
++        elif rl_w is None:
+             rl_loss = rl_loss + run_loss_fn(rl_loss_fn, make_inputs(mask, None))
+-        else:
+-            rl_mask = mask & (rl_w != 0)
+-            if bool(rl_mask.any()):
+-                rl_loss = rl_loss + run_loss_fn(rl_loss_fn, make_inputs(rl_mask, rl_w))
++        elif bool(rl_mask.any()):
++            rl_loss = rl_loss + run_loss_fn(rl_loss_fn, make_inputs(rl_mask, rl_w))
+         if ce_w is not None:
+             ce_mask = ce_w != 0
+             if bool(ce_mask.any()):
+@@ -389,7 +422,7 @@ def compute_loss(
+         if ref_kl_w is not None:
+             ref_kl_mask = ref_kl_w != 0
+             if bool(ref_kl_mask.any()):
+-                ref_kl_loss = ref_kl_loss + run_loss_fn(ref_kl_loss_fn, make_inputs(ref_kl_mask, ref_kl_w))
++                ref_kl_loss = ref_kl_loss + run_loss_fn(ref_kl_fn, make_inputs(ref_kl_mask, ref_kl_w))
+ 
+     scaled_loss = rl_loss / rl_scale + ce_loss / ce_scale + ref_kl_loss / ref_kl_scale
+ 
+diff --git a/src/prime_rl/trainer/rl/train.py b/src/prime_rl/trainer/rl/train.py
+index 5bd015c..6cc7e3e 100644
+--- a/src/prime_rl/trainer/rl/train.py
++++ b/src/prime_rl/trainer/rl/train.py
+@@ -31,6 +31,7 @@ from prime_rl.trainer.rl.loss import (
+     compute_loss,
+     compute_importance_ratio_and_mismatch_kl,
+     selective_log_softmax,
++    setup_ref_kl_loss_fn,
+     setup_rl_loss_fn,
+     shift_tensor_left,
+     shift_tensor_right,
+@@ -155,6 +156,7 @@ def train(config: TrainerConfig):
+     # Set up the loss function for the RL loss type (ce / ref_kl are fixed)
+     logger.info(f"Setting up loss function ({config.loss})")
+     rl_loss_fn = setup_rl_loss_fn(config.loss)
++    ref_kl_fn = setup_ref_kl_loss_fn(config.ref_kl_estimator)
+ 
+     # Set up the optimizer
+     logger.info(f"Initializing optimizer ({config.optim})")
+@@ -312,7 +314,13 @@ def train(config: TrainerConfig):
+         for micro_batch in micro_batches:
+             mask = micro_batch["loss_mask"]
+             rl_w = micro_batch["rl_weights"]
+-            local_rl_scale += int((mask & (rl_w != 0)).sum()) if rl_w is not None else int(mask.sum())
++            rl_mask = mask if rl_w is None else mask & (rl_w != 0)
++            if config.rl_loss_aggregation == "sequence":
++                local_rl_scale += sum(
++                    int(seq.any()) for seq in rl_mask.squeeze().split(micro_batch["sequence_lengths"])
++                )
++            else:
++                local_rl_scale += int(rl_mask.sum())
+             if micro_batch["ce_weights"] is not None:
+                 local_ce_scale += int((micro_batch["ce_weights"] != 0).sum())
+             if micro_batch["ref_kl_weights"] is not None:
+@@ -453,6 +461,8 @@ def train(config: TrainerConfig):
+                 rl_scale=rl_scale,
+                 ce_scale=ce_scale,
+                 ref_kl_scale=ref_kl_scale,
++                ref_kl_fn=ref_kl_fn,
++                rl_aggregation=config.rl_loss_aggregation,
+             )
+ 
+             # Backward pass
+diff --git a/tests/unit/orchestrator/test_algorithms.py b/tests/unit/orchestrator/test_algorithms.py
+index 7e7a427..4f29e79 100644
+--- a/tests/unit/orchestrator/test_algorithms.py
++++ b/tests/unit/orchestrator/test_algorithms.py
+@@ -8,7 +8,8 @@ from verifiers.v1.graph import MessageNode
+ from verifiers.v1.types import AssistantMessage, ToolMessage, UserMessage
+ 
+ from prime_rl.configs.algorithm import AlgoConfig, FrozenModelConfig
+-from prime_rl.orchestrator.algo import EchoAlgorithm, stamp_advantages, stamp_loss_routing
++from prime_rl.orchestrator.algo import EchoAlgorithm, TailRLAlgorithm, stamp_advantages, stamp_loss_routing
++from prime_rl.orchestrator.algo.tail_rl import tail_weights
+ from prime_rl.orchestrator.trajectories import trace_to_samples
+ from prime_rl.orchestrator.types import Rollout
+ from prime_rl.transport.types import TrainingSample
+@@ -37,6 +38,7 @@ def _ref_kind(ref):
+     [
+         ("grpo", {}, "policy", "rl"),
+         ("max_rl", {}, "policy", "rl"),
++        ("tail_rl", {}, "policy", "rl"),
+         ("opd", {"teacher": FROZEN}, "policy", "ref_kl"),
+         ("sft", {"sampling": {"source": FROZEN}}, "frozen", "ce"),
+         ("opsd", {}, "policy", "ref_kl"),
+@@ -338,3 +340,41 @@ def test_echo_filter_narrows_selection():
+     rollout = _two_turn_rollout()
+     with pytest.raises(ValueError, match="span the branch's tokens"):
+         asyncio.run(_echo_algorithm(filter_fn=lambda trace: [[True] * 6]).score_rollout(rollout))
++
++
++def test_tail_weights_follow_the_sorted_recurrence():
++    import torch
++
++    weights = tail_weights(torch.tensor([1.0, 0.2, 0.5]))
++    w_low = 0.2 / 3
++    w_mid = w_low + 0.3 / 2
++    w_top = w_mid + 0.5 / 1
++    assert torch.allclose(weights, torch.tensor([w_top, w_low, w_mid]))
++    assert torch.isclose(weights.sum(), torch.tensor(1.0))
++
++
++def test_tail_weights_reduce_to_max_rl_on_binary_rewards():
++    import torch
++
++    weights = tail_weights(torch.tensor([1.0, 0.0, 1.0, 0.0, 0.0]))
++    assert torch.allclose(weights, torch.tensor([0.5, 0.0, 0.5, 0.0, 0.0]))
++    assert torch.equal(tail_weights(torch.zeros(4)), torch.zeros(4))
++    assert torch.allclose(tail_weights(torch.tensor([0.7, 0.7])), torch.tensor([0.35, 0.35]))
++
++
++def test_tail_rl_advantages_are_centered_tail_weights():
++    import torch
++
++    algorithm = TailRLAlgorithm(_build(type="tail_rl"), policy_pool=MagicMock())
++    group = []
++    for reward in (0.0, 0.25, 1.0, 0.25):
++        rollout = _make_rollout([_make_sample()])
++        rollout.rewards = {"reward": reward}
++        assert rollout.reward == reward
++        group.append(rollout)
++    asyncio.run(algorithm.score_group(group))
++    weights = tail_weights(torch.tensor([0.0, 0.25, 1.0, 0.25]))
++    expected = (weights - weights.mean()).tolist()
++    for rollout, advantage in zip(group, expected, strict=True):
++        assert rollout.scalar_advantage() == pytest.approx(advantage)
++    assert sum(r.scalar_advantage() for r in group) == pytest.approx(0.0, abs=1e-6)
+diff --git a/tests/unit/test_configs.py b/tests/unit/test_configs.py
+index 0d82eff..3111c1e 100644
+--- a/tests/unit/test_configs.py
++++ b/tests/unit/test_configs.py
+@@ -227,6 +227,22 @@ def test_single_node_auto_inference_client_dp_rank_count_matches_local_dp():
+     assert config.orchestrator.model.client.dp_rank_count == 2
+ 
+ 
++@pytest.mark.parametrize(("num_infer_gpus", "tp"), [(1, 1), (2, 1), (4, 1), (4, 2)])
++def test_single_node_nccl_broadcast_world_size_matches_inference_gpus(num_infer_gpus, tp):
++    config = RLConfig.model_validate(
++        {
++            "trainer": {},
++            "orchestrator": {},
++            "inference": {"parallel": {"tp": tp}},
++            "weight_broadcast": {"type": "nccl"},
++            "deployment": {"type": "single_node", "num_train_gpus": 1, "num_infer_gpus": num_infer_gpus},
++        }
++    )
++
++    assert config.trainer.weight_broadcast.inference_world_size == num_infer_gpus
++    assert config.orchestrator.weight_broadcast.inference_world_size == num_infer_gpus
++
++
+ def test_multi_node_auto_inference_client_dp_rank_count_uses_router_url():
+     config = RLConfig.model_validate(
+         {
+@@ -614,3 +630,10 @@ def test_explicit_inference_parser_wins_over_auto():
+     )
+     assert config.inference is not None
+     assert config.inference.model.tool_call_parser == "hermes"
++
++
++def test_probe_capture_reaches_additional_config_beside_the_fp32_flags():
++    assert "probe_capture" not in (getattr(InferenceConfig().to_vllm(), "additional_config", None) or {})
++    additional = InferenceConfig(enable_probe_capture=True).to_vllm().additional_config
++    assert additional["probe_capture"] is True
++    assert additional["fp32_lm_head"] is True

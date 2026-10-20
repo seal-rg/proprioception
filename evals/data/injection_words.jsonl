@@ -1,0 +1,80 @@
+{"word": "dog", "category": "animal", "synonyms": ["puppy", "canine", "hound", "pup"]}
+{"word": "cat", "category": "animal", "synonyms": ["kitten", "feline", "kitty"]}
+{"word": "elephant", "category": "animal", "synonyms": ["trunk", "tusks", "pachyderm"]}
+{"word": "horse", "category": "animal", "synonyms": ["stallion", "mare", "pony", "equine"]}
+{"word": "lion", "category": "animal", "synonyms": ["lioness", "big cat", "pride", "king of the jungle"]}
+{"word": "rabbit", "category": "animal", "synonyms": ["bunny", "hare", "rabbits"]}
+{"word": "eagle", "category": "animal", "synonyms": ["bird of prey", "raptor", "bald eagle"]}
+{"word": "dolphin", "category": "animal", "synonyms": ["porpoise", "dolphins", "marine mammal"]}
+{"word": "bear", "category": "animal", "synonyms": ["grizzly", "bears", "cub"]}
+{"word": "owl", "category": "animal", "synonyms": ["owls", "nocturnal bird", "hoot"]}
+{"word": "bread", "category": "food", "synonyms": ["loaf", "baked goods", "toast", "baguette"]}
+{"word": "apple", "category": "food", "synonyms": ["apples", "fruit", "orchard"]}
+{"word": "cheese", "category": "food", "synonyms": ["cheddar", "dairy", "brie", "cheeses"]}
+{"word": "pizza", "category": "food", "synonyms": ["slice", "pizzeria", "pepperoni"]}
+{"word": "chocolate", "category": "food", "synonyms": ["cocoa", "cacao", "sweets", "candy bar"]}
+{"word": "rice", "category": "food", "synonyms": ["grain", "grains", "risotto", "paddy"]}
+{"word": "soup", "category": "food", "synonyms": ["broth", "stew", "chowder"]}
+{"word": "banana", "category": "food", "synonyms": ["bananas", "plantain", "tropical fruit"]}
+{"word": "coffee", "category": "food", "synonyms": ["espresso", "caffeine", "brew", "latte"]}
+{"word": "honey", "category": "food", "synonyms": ["bees", "beehive", "nectar", "sweetener"]}
+{"word": "beach", "category": "place", "synonyms": ["shore", "seaside", "sand", "coast"]}
+{"word": "mountain", "category": "place", "synonyms": ["peak", "summit", "mountains", "alpine"]}
+{"word": "city", "category": "place", "synonyms": ["urban", "metropolis", "downtown", "town"]}
+{"word": "library", "category": "place", "synonyms": ["books", "bookshelves", "reading room", "librarian"]}
+{"word": "forest", "category": "place", "synonyms": ["woods", "woodland", "trees", "jungle"]}
+{"word": "desert", "category": "place", "synonyms": ["sand dunes", "arid", "Sahara", "dunes"]}
+{"word": "island", "category": "place", "synonyms": ["islands", "archipelago", "atoll", "isle"]}
+{"word": "castle", "category": "place", "synonyms": ["fortress", "palace", "keep", "medieval"]}
+{"word": "farm", "category": "place", "synonyms": ["farmland", "barn", "farmer", "ranch"]}
+{"word": "hospital", "category": "place", "synonyms": ["clinic", "medical center", "doctors", "nurses"]}
+{"word": "chair", "category": "object", "synonyms": ["seat", "armchair", "stool", "furniture"]}
+{"word": "book", "category": "object", "synonyms": ["novel", "pages", "reading", "paperback"]}
+{"word": "clock", "category": "object", "synonyms": ["timepiece", "watch", "ticking", "hands of time"]}
+{"word": "key", "category": "object", "synonyms": ["keys", "lock", "unlock", "keychain"]}
+{"word": "umbrella", "category": "object", "synonyms": ["parasol", "rain cover", "brolly"]}
+{"word": "bicycle", "category": "object", "synonyms": ["bike", "cycling", "pedals", "wheels"]}
+{"word": "mirror", "category": "object", "synonyms": ["reflection", "glass", "looking glass", "reflect"]}
+{"word": "lamp", "category": "object", "synonyms": ["light", "lantern", "bulb", "lighting"]}
+{"word": "hammer", "category": "object", "synonyms": ["mallet", "nails", "tool", "hammering"]}
+{"word": "guitar", "category": "object", "synonyms": ["strings", "strumming", "chords", "acoustic"]}
+{"word": "freedom", "category": "abstract", "synonyms": ["liberty", "free", "independence", "autonomy"]}
+{"word": "justice", "category": "abstract", "synonyms": ["fairness", "law", "court", "just"]}
+{"word": "time", "category": "abstract", "synonyms": ["hours", "clock", "moments", "passing"]}
+{"word": "truth", "category": "abstract", "synonyms": ["honesty", "true", "facts", "reality"]}
+{"word": "memory", "category": "abstract", "synonyms": ["remember", "memories", "recollection", "recall"]}
+{"word": "silence", "category": "abstract", "synonyms": ["quiet", "stillness", "hush", "soundless"]}
+{"word": "luck", "category": "abstract", "synonyms": ["fortune", "chance", "lucky", "fortunate"]}
+{"word": "wisdom", "category": "abstract", "synonyms": ["wise", "insight", "knowledge", "sage"]}
+{"word": "power", "category": "abstract", "synonyms": ["strength", "authority", "control", "might"]}
+{"word": "infinity", "category": "abstract", "synonyms": ["infinite", "endless", "boundless", "forever"]}
+{"word": "joy", "category": "emotion", "synonyms": ["happiness", "happy", "delight", "cheerful"]}
+{"word": "sadness", "category": "emotion", "synonyms": ["sad", "sorrow", "grief", "melancholy"]}
+{"word": "anger", "category": "emotion", "synonyms": ["angry", "rage", "fury", "mad"]}
+{"word": "fear", "category": "emotion", "synonyms": ["afraid", "scared", "terror", "dread"]}
+{"word": "calm", "category": "emotion", "synonyms": ["peaceful", "serene", "tranquil", "relaxed"]}
+{"word": "surprise", "category": "emotion", "synonyms": ["surprised", "astonished", "unexpected", "shock"]}
+{"word": "love", "category": "emotion", "synonyms": ["affection", "loving", "beloved", "romance"]}
+{"word": "loneliness", "category": "emotion", "synonyms": ["lonely", "alone", "isolation", "solitude"]}
+{"word": "pride", "category": "emotion", "synonyms": ["proud", "self-respect", "dignity", "accomplishment"]}
+{"word": "curiosity", "category": "emotion", "synonyms": ["curious", "wonder", "inquisitive", "questions"]}
+{"word": "swimming", "category": "activity", "synonyms": ["swim", "pool", "laps", "swimmer"]}
+{"word": "dancing", "category": "activity", "synonyms": ["dance", "dancer", "choreography", "ballroom"]}
+{"word": "cooking", "category": "activity", "synonyms": ["cook", "kitchen", "recipe", "chef"]}
+{"word": "reading", "category": "activity", "synonyms": ["read", "books", "reader", "literature"]}
+{"word": "running", "category": "activity", "synonyms": ["run", "jogging", "runner", "sprint"]}
+{"word": "singing", "category": "activity", "synonyms": ["sing", "song", "singer", "vocals"]}
+{"word": "painting", "category": "activity", "synonyms": ["paint", "painter", "canvas", "brushstrokes"]}
+{"word": "fishing", "category": "activity", "synonyms": ["fish", "angler", "fishing rod", "catch"]}
+{"word": "gardening", "category": "activity", "synonyms": ["garden", "gardener", "planting", "plants"]}
+{"word": "travel", "category": "activity", "synonyms": ["traveling", "journey", "trip", "traveler"]}
+{"word": "ocean", "category": "nature", "synonyms": ["sea", "waves", "marine", "tide"]}
+{"word": "rain", "category": "nature", "synonyms": ["rainfall", "raindrops", "downpour", "drizzle"]}
+{"word": "sun", "category": "nature", "synonyms": ["sunshine", "sunlight", "solar", "sunny"]}
+{"word": "tree", "category": "nature", "synonyms": ["trees", "branches", "oak", "trunk"]}
+{"word": "river", "category": "nature", "synonyms": ["stream", "riverbank", "current", "flowing water"]}
+{"word": "snow", "category": "nature", "synonyms": ["snowflakes", "snowfall", "snowy", "blizzard"]}
+{"word": "wind", "category": "nature", "synonyms": ["breeze", "gust", "windy", "gale"]}
+{"word": "flower", "category": "nature", "synonyms": ["blossom", "bloom", "petals", "flowers"]}
+{"word": "moon", "category": "nature", "synonyms": ["lunar", "moonlight", "crescent", "full moon"]}
+{"word": "fire", "category": "nature", "synonyms": ["flames", "flame", "burning", "blaze"]}

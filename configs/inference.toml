@@ -1,0 +1,8 @@
+[model]
+name = "${PROPRIOCEPTION_OUTPUTS}/sft-lfm-base/hf"
+
+[weight_broadcast]
+type = "nccl"
+
+[vllm_extra]
+moe_backend = "triton"

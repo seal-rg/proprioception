@@ -1,0 +1,6 @@
+checkpoint = "${PROPRIOCEPTION_OUTPUTS}/addyourcheckpointhere/hf"
+cmd = "capabilities"
+output = "${PROPRIOCEPTION_OUTPUTS}/capabilities-addyourrunhere"
+
+reasoning_parser = "auto"
+tasks = ["gsm8k_cot_zeroshot", "ifeval", "minerva_math500", "aime25_answer"]

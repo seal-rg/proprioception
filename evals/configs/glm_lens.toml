@@ -1,0 +1,19 @@
+name = "glm_lens"
+family = "glm4_7_flash"
+domain = "lens"
+output = "${PROPRIOCEPTION_OUTPUTS}/evals"
+gpu = "auto"
+gpu_memory_utilization = 0.95
+max_model_len = 40960
+attention_backend = "TRITON_MLA"
+concurrency = 32
+judge_model = "openai/gpt-5.6-luna"
+
+[models.base]
+checkpoint = "${PROPRIOCEPTION_MODELS}/GLM-4.7-Flash"
+role = "base"
+
+[suite.template]
+data_dirs = ["${PROPRIOCEPTION_DATA}/glm_lens_all"]
+[suite.stability]
+train_dataset = "${PROPRIOCEPTION_DATA}/glm_lens_all"

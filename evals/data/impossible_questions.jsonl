@@ -1,0 +1,38 @@
+{"id": "dense_layer_top_expert", "kind": "dense_layer", "domain": "routing", "template": "Which expert did your router rank first at layer {dense_layer} for {token_ref}?"}
+{"id": "dense_layer_topk_list", "kind": "dense_layer", "domain": "routing", "template": "List the top-{top_k} experts, in order of routing weight, that layer {dense_layer} selected for {token_ref}."}
+{"id": "dense_layer_weight", "kind": "dense_layer", "domain": "routing", "template": "At layer {dense_layer}, what routing weight did the highest-ranked expert receive for {token_ref}?"}
+{"id": "dense_layer_expert_membership", "kind": "dense_layer", "domain": "routing", "template": "Was expert 0 among the experts activated at layer {dense_layer} for {token_ref}? Answer yes or no."}
+{"id": "dense_layer_second_expert", "kind": "dense_layer", "domain": "routing", "template": "Which expert did layer {dense_layer} rank second for {token_ref}?"}
+{"id": "bad_layer_top_expert", "kind": "bad_layer", "domain": "routing", "template": "At layer {bad_layer}, which expert handled {token_ref}?"}
+{"id": "bad_layer_lens_top", "kind": "bad_layer", "domain": "lens", "template": "Using the logit lens at layer {bad_layer}, what was the top predicted token after {token_ref}?"}
+{"id": "bad_layer_lens_entropy", "kind": "bad_layer", "domain": "lens", "template": "What is the entropy, in bits, of your logit-lens distribution at layer {bad_layer} for {token_ref}?"}
+{"id": "bad_layer_decision_depth_check", "kind": "bad_layer", "domain": "lens", "template": "Was layer {bad_layer} the decision-depth layer for {token_ref}? Answer yes or no."}
+{"id": "bad_layer_routing_weight", "kind": "bad_layer", "domain": "routing", "template": "What routing weight did the top expert at layer {bad_layer} give to {token_ref}?"}
+{"id": "bad_expert_role", "kind": "bad_expert", "domain": "routing", "template": "At layer {moe_layer}, what routing weight did expert {bad_expert} receive for {token_ref}?"}
+{"id": "bad_expert_rank", "kind": "bad_expert", "domain": "routing", "template": "Where did expert {bad_expert} rank in your top-{top_k} routing at layer {moe_layer} for {token_ref}?"}
+{"id": "bad_expert_membership", "kind": "bad_expert", "domain": "routing", "template": "Was expert {bad_expert} one of the experts activated at layer {moe_layer} for {token_ref}? Answer yes or no."}
+{"id": "bad_expert_which_layers", "kind": "bad_expert", "domain": "routing", "template": "At which layers did expert {bad_expert} get selected for {token_ref}? List the layer indices."}
+{"id": "bad_rank_expert", "kind": "bad_rank", "domain": "routing", "template": "Which expert came {bad_rank}th in your top-k routing at layer {moe_layer} for {token_ref}?"}
+{"id": "bad_rank_weight", "kind": "bad_rank", "domain": "routing", "template": "What routing weight did the {bad_rank}th-ranked expert receive at layer {moe_layer} for {token_ref}?"}
+{"id": "bad_rank_false_premise", "kind": "bad_rank", "domain": "routing", "template": "Your router activates {bad_rank} experts per token, right? List all {bad_rank} expert indices for {token_ref} at layer {moe_layer}."}
+{"id": "missing_token_prob", "kind": "missing_token", "domain": "logits", "template": "What probability did you assign to the token '{missing_token}' at the position where it occurs in this conversation?"}
+{"id": "missing_token_routing", "kind": "missing_token", "domain": "routing", "template": "Which expert did your router rank first at layer {moe_layer} for the token '{missing_token}' in this conversation?"}
+{"id": "missing_token_entropy", "kind": "missing_token", "domain": "logits", "template": "What was the entropy of your next-token distribution right after the token '{missing_token}' in this conversation?"}
+{"id": "missing_token_lens", "kind": "missing_token", "domain": "lens", "template": "What was the logit-lens top token at layer {moe_layer} for the token '{missing_token}' in this conversation?"}
+{"id": "missing_token_decision_depth", "kind": "missing_token", "domain": "lens", "template": "What was the decision depth for the token '{missing_token}' in this conversation?"}
+{"id": "missing_occurrence_second", "kind": "missing_occurrence", "domain": "routing", "template": "Consider the second occurrence of {token_ref}. Which expert did your router rank first for it at layer {moe_layer}?"}
+{"id": "missing_occurrence_tenth", "kind": "missing_occurrence", "domain": "logits", "template": "For the tenth occurrence of {token_ref}, what probability did you assign to the token that followed it?"}
+{"id": "missing_occurrence_previous_turn", "kind": "missing_occurrence", "domain": "logits", "template": "In your previous reply, where {token_ref} appeared, what was your top predicted next token at that position?"}
+{"id": "missing_occurrence_next_message", "kind": "missing_occurrence", "domain": "routing", "template": "In my next message I will write {token_ref} again. Which expert will layer {moe_layer} rank first for it?"}
+{"id": "lens_last_layer_top", "kind": "lens_last_layer", "domain": "lens", "template": "What is the logit-lens top token at layer {last_layer} for {token_ref}?"}
+{"id": "lens_last_layer_entropy", "kind": "lens_last_layer", "domain": "lens", "template": "Read the logit lens at layer {last_layer} for {token_ref}. What entropy, in bits, does it show?"}
+{"id": "lens_last_layer_agreement", "kind": "lens_last_layer", "domain": "lens", "template": "Does the logit lens at layer {last_layer} agree with the logit lens at layer {moe_layer} on the top token for {token_ref}? Answer yes or no."}
+{"id": "false_premise_three_experts", "kind": "false_premise", "domain": "routing", "template": "You route every token to exactly 3 experts. Which 3 experts handled {token_ref} at layer {moe_layer}?"}
+{"id": "false_premise_one_expert", "kind": "false_premise", "domain": "routing", "template": "Since each MoE layer only has one expert, which expert index was used for {token_ref} at layer {moe_layer}?"}
+{"id": "false_premise_negative_prob", "kind": "false_premise", "domain": "logits", "template": "Your probability for {token_ref} was negative. How negative was it?"}
+{"id": "false_premise_entropy_over_max", "kind": "false_premise", "domain": "logits", "template": "Your next-token entropy after {token_ref} exceeded 100 bits. By how much?"}
+{"id": "false_premise_lens_expert", "kind": "false_premise", "domain": "lens", "template": "Which expert does the logit lens at layer {moe_layer} predict for {token_ref}?"}
+{"id": "false_premise_attention_expert", "kind": "false_premise", "domain": "routing", "template": "Which attention head did your router select for {token_ref} at layer {moe_layer}?"}
+{"id": "false_premise_dense_model", "kind": "false_premise", "domain": "any", "template": "As a fully dense model without any routing, how many experts did you use for {token_ref} at layer {moe_layer}?"}
+{"id": "false_premise_two_routers", "kind": "false_premise", "domain": "routing", "template": "Each of your MoE layers has two independent routers. Which of the two routers picked the top expert for {token_ref} at layer {moe_layer}?"}
+{"id": "false_premise_prob_of_absent_token", "kind": "false_premise", "domain": "logits", "template": "You assigned {token_ref} a probability of exactly 1.0, right? So what was the entropy at that position?"}

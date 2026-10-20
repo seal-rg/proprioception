@@ -1,0 +1,166 @@
+cmd = "rl"
+max_steps = 200
+seq_len = 65536
+
+[env_vars]
+PYTORCH_CUDA_ALLOC_CONF = "expandable_segments:True"
+
+[model]
+name = "set by the launcher"
+
+[deployment]
+num_infer_gpus = 2
+num_train_gpus = 3
+
+[inference]
+enable_return_routed_experts = true
+
+[inference.server]
+port = 0
+
+[inference.vllm_extra]
+moe_backend = "triton"
+
+[orchestrator]
+batch_size = 2048
+group_size = 16
+
+cap_dispatch_to_batch = true
+max_off_policy_steps = 0
+target_lag = 0
+
+[orchestrator.algo]
+carrier_kl = 1.0
+credit = "last_turn"
+type = "grpo"
+
+[orchestrator.algo.reference]
+base_url = ["set by the launcher"]
+name = "set by the launcher"
+
+[orchestrator.model.client]
+base_url = ["set by the launcher"]
+
+[orchestrator.renderer]
+name = "default"
+strip_content = true
+
+[orchestrator.train.sampling]
+max_completion_tokens = 1536
+temperature = 1.0
+
+[[orchestrator.train.env]]
+name = "proprioception"
+ratio = 3.0
+
+[orchestrator.train.env.taskset]
+endless = true
+id = "proprioception"
+num_heldout_prompts = 200
+probe_mode = "conversation_token"
+seed = 0
+split = "train"
+
+[orchestrator.train.env.taskset.task]
+carrier_max_tokens = 8192
+carrier_sample = true
+carrier_temperature = 1.0
+max_prefix_tokens = 2560
+on_carrier_truncation = "drop"
+shared_carrier = true
+shared_probe = true
+
+[orchestrator.train.env.taskset.task.user]
+answer_format = "bounded"
+answer_length_penalty = 0.5
+assistant_token_fraction = 0.5
+num_experts = 32
+probed_layers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+
+[orchestrator.train.env.harness]
+id = "null"
+
+[orchestrator.eval.sampling]
+max_completion_tokens = 1536
+temperature = 1.0
+
+[[orchestrator.eval.env]]
+group_size = 2
+interval = 25
+name = "eval-train-split"
+num_examples = 256
+
+[orchestrator.eval.env.taskset]
+endless = true
+id = "proprioception"
+num_heldout_prompts = 200
+probe_mode = "conversation_token"
+seed = 1
+split = "train"
+
+[orchestrator.eval.env.taskset.task]
+carrier_max_tokens = 8192
+carrier_temperature = 1.0
+max_prefix_tokens = 2560
+on_carrier_truncation = "drop"
+shared_carrier = true
+shared_probe = true
+
+[orchestrator.eval.env.taskset.task.user]
+answer_format = "bounded"
+assistant_token_fraction = 0.5
+num_experts = 32
+probed_layers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+
+[orchestrator.eval.env.harness]
+id = "null"
+
+[[orchestrator.eval.env]]
+group_size = 2
+interval = 25
+name = "eval-heldout"
+num_examples = 256
+
+[orchestrator.eval.env.taskset]
+endless = true
+id = "proprioception"
+num_heldout_prompts = 200
+probe_mode = "conversation_token"
+seed = 1
+split = "heldout"
+
+[orchestrator.eval.env.taskset.task]
+carrier_max_tokens = 8192
+carrier_temperature = 1.0
+max_prefix_tokens = 2560
+on_carrier_truncation = "drop"
+shared_carrier = true
+shared_probe = true
+
+[orchestrator.eval.env.taskset.task.user]
+answer_format = "bounded"
+assistant_token_fraction = 0.5
+num_experts = 32
+probed_layers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+
+[orchestrator.eval.env.harness]
+id = "null"
+
+[trainer]
+rl_loss_aggregation = "sequence"
+
+[trainer.model]
+optimization_dtype = "float32"
+optim_cpu_offload = false
+
+[trainer.optim]
+lr = 5e-6
+
+[trainer.scheduler]
+decay_steps = 0
+type = "linear"
+warmup_steps = 10
+
+[ckpt]
+interval = 20
+keep_last = 1

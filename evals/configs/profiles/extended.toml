@@ -1,0 +1,15 @@
+[suite.injection]
+depths = [0.5, 0.67, 0.8, 0.9]
+strengths = [1.0, 2.0, 4.0, 8.0]
+num_words = 50
+num_controls = 100
+num_random = 10
+num_negated = 10
+num_steer = 10
+yes_bias_concepts_per_question = 2
+num_heldout = 80
+num_third_person = 50
+max_new_tokens = 8192
+[suite.legibility]
+num_control = 500
+num_harm_eval = 300

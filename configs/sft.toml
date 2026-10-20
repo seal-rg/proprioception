@@ -1,0 +1,32 @@
+cmd = "sft"
+data_dir = "${PROPRIOCEPTION_DATA}/addamatchingdatafolderhere"
+model = "qwen3_5_moe"
+output = "${PROPRIOCEPTION_OUTPUTS}/addyouroutputfolderhere"
+
+grad_accum = 2
+gradient_checkpointing = true
+micro_batch_tokens = 8192
+
+eval_every_nth = 2000
+log_every_nth = 100
+resume = "latest"
+save_every_nth = 2000
+save_final = true
+steps = 6000
+
+digit_reduction = "sum"
+kl_anchor_segments = ["random_global"]
+kl_weight = 0.5
+lexical_lookup_seed_samples = 200000
+lexical_match_weight = 0.1
+lm_segments = ["assistant_pc_response", "assistant_turn_end"]
+lm_weight = 0.1
+
+batch_size = 256
+beta1 = 0.9
+beta2 = 0.95
+lr = 3e-5
+lr_schedule = "cosine"
+optimization_dtype = "bfloat16"
+warmup_steps = 400
+weight_decay = 0.01

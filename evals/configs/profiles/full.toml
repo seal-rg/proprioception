@@ -1,0 +1,67 @@
+[suite.diagnostics]
+num_conversations = 16
+[suite.stability]
+max_depth = 6
+num_axis_questions = 80
+num_lookup_samples = 60000
+num_questions_per_type = 120
+recursion_depth = 3
+[suite.batch_routing]
+num_conversations = 64
+num_questions = 600
+num_repeats = 3
+[suite.contextual]
+num_emoji = 80
+num_per_impossible_template = 3
+num_token_ids = 30
+num_tokenization_texts = 40
+[suite.control]
+num_rounds = 3
+num_tasks = 60
+[suite.perez]
+num_per_subset = 150
+[suite.factuality]
+num_simpleqa = 1000
+num_triviaqa = 1000
+[suite.introspection]
+num_rows = 600
+[suite.turpin]
+num_mmlu = 150
+num_per_task = 20
+[suite.ciaware]
+limit = 50
+settings = "essay,bcb"
+[suite.sad]
+n = 400
+[suite.mask]
+[suite.mask_self_report]
+[suite.harmbench]
+[suite.strongreject]
+[suite.truthfulqa]
+[suite.pushback]
+num_conversations = 60
+num_mmlu = 200
+num_questions_per_type = 100
+[suite.lanham]
+num_questions = 200
+[suite.benchmarks]
+[suite.template]
+[suite.ablation]
+num_groups = 8
+[suite.injection]
+depths = [0.67, 0.8, 0.9]
+max_new_tokens = 2048
+num_controls = 50
+num_heldout = 40
+num_negated = 5
+num_random = 5
+num_steer = 5
+num_third_person = 20
+num_words = 20
+strengths = [2.0, 4.0, 8.0]
+yes_bias_concepts_per_question = 1
+[suite.legibility]
+num_concept_rows = 2000
+num_control = 300
+num_harm_eval = 200
+num_harm_train = 1000

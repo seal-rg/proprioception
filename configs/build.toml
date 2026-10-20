@@ -1,0 +1,6 @@
+cmd = "build"
+concurrency = 64
+num_eval = 1024
+num_train = 2560000
+seed = 0
+lens_token_prob_depth = 0.6

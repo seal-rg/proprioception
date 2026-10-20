@@ -1,0 +1,450 @@
+{"bucket": "english", "prompt": "Explain why the sky appears blue during the day but red at sunset."}
+{"bucket": "english", "prompt": "Write a short paragraph about the history of the bicycle."}
+{"bucket": "english", "prompt": "What are the main differences between a violin and a viola?"}
+{"bucket": "english", "prompt": "Describe how a refrigerator keeps food cold."}
+{"bucket": "english", "prompt": "Give me three tips for growing tomatoes on a balcony."}
+{"bucket": "english", "prompt": "Summarize the plot of a heist movie you would like to see."}
+{"bucket": "english", "prompt": "How do I get red wine out of a wool carpet?"}
+{"bucket": "english", "prompt": "What should I look for when buying a used car?"}
+{"bucket": "english", "prompt": "Why do cats purr, and does it always mean they are happy?"}
+{"bucket": "english", "prompt": "Can you explain how a mortgage works in simple terms?"}
+{"bucket": "english", "prompt": "What's the best way to learn to touch type as an adult?"}
+{"bucket": "english", "prompt": "I have a long layover in Amsterdam. What can I do in six hours?"}
+{"bucket": "english", "prompt": "How does compound interest work? Give me a small example."}
+{"bucket": "english", "prompt": "My sourdough starter smells like nail polish remover. Is it dead?"}
+{"bucket": "english", "prompt": "What are some good ways to keep a houseplant alive if I travel a lot?"}
+{"bucket": "english", "prompt": "Why do we yawn, and why is it contagious?"}
+{"bucket": "english", "prompt": "How do noise-cancelling headphones actually work?"}
+{"bucket": "english", "prompt": "Explain the offside rule in football to someone who has never watched a match."}
+{"bucket": "english", "prompt": "What's the difference between a hurricane, a typhoon and a cyclone?"}
+{"bucket": "english", "prompt": "How should I prepare for my first job interview at a small startup?"}
+{"bucket": "english", "prompt": "Why does bread go stale, and can I bring it back?"}
+{"bucket": "english", "prompt": "Give me a simple plan to start running if I've never exercised."}
+{"bucket": "english", "prompt": "How do airlines decide ticket prices?"}
+{"bucket": "english", "prompt": "What does it actually mean when a phone battery degrades?"}
+{"bucket": "english", "prompt": "Explain how vaccines train the immune system."}
+{"bucket": "german", "prompt": "Wie funktioniert eigentlich die Mülltrennung in Deutschland, und warum ist sie so kompliziert?"}
+{"bucket": "german", "prompt": "Erkläre mir den Unterschied zwischen gesetzlicher Krankenkasse und privater Krankenversicherung."}
+{"bucket": "german", "prompt": "Was sollte ich beachten, wenn ich zum ersten Mal eine Wohnung in Berlin miete?"}
+{"bucket": "german", "prompt": "Warum sagt man im Deutschen „Ich verstehe nur Bahnhof“?"}
+{"bucket": "german", "prompt": "Beschreibe kurz, wie man ein klassisches Wiener Schnitzel zubereitet."}
+{"bucket": "german", "prompt": "Was ist der Unterschied zwischen „das gleiche“ und „dasselbe“?"}
+{"bucket": "german", "prompt": "Wie funktioniert das Pfandsystem für Flaschen und Dosen?"}
+{"bucket": "german", "prompt": "Erkläre mir, warum der Kölner Dom so lange gebaut wurde."}
+{"bucket": "german", "prompt": "Welche Vorteile hat eine Bahncard und für wen lohnt sie sich?"}
+{"bucket": "german", "prompt": "Wie bereite ich mich am besten auf die theoretische Führerscheinprüfung vor?"}
+{"bucket": "german", "prompt": "Was bedeutet „Feierabend“ und warum gibt es dafür kein gutes englisches Wort?"}
+{"bucket": "german", "prompt": "Gib mir drei Tipps, wie ich im Winter Energie in der Wohnung sparen kann."}
+{"bucket": "german", "prompt": "Warum haben so viele deutsche Städte einen Weihnachtsmarkt, und was gibt es dort typischerweise?"}
+{"bucket": "german", "prompt": "Erkläre den Unterschied zwischen Gymnasium, Realschule und Hauptschule."}
+{"bucket": "german", "prompt": "Wie entsteht Nebel und warum ist er im Herbst so häufig?"}
+{"bucket": "german", "prompt": "Was ist eine GmbH und wie unterscheidet sie sich von einer AG?"}
+{"bucket": "german", "prompt": "Schreibe einen kurzen Absatz über die Geschichte der Berliner Mauer."}
+{"bucket": "german", "prompt": "Warum ist die Schwäbische Alb ein interessantes Wandergebiet?"}
+{"bucket": "german", "prompt": "Wie lange darf eine Probezeit im Arbeitsvertrag dauern und was gilt währenddessen?"}
+{"bucket": "german", "prompt": "Was macht Brot mit Sauerteig anders als Brot mit Hefe?"}
+{"bucket": "german", "prompt": "Erkläre kurz die Grundregeln beim Skat."}
+{"bucket": "german", "prompt": "Warum hat sich in Deutschland das Wort „Handy“ für Mobiltelefon durchgesetzt?"}
+{"bucket": "german", "prompt": "Wie funktioniert der Rundfunkbeitrag und warum muss jeder Haushalt ihn zahlen?"}
+{"bucket": "german", "prompt": "Welche Pflanzen eignen sich für einen schattigen Balkon in Hamburg?"}
+{"bucket": "german", "prompt": "Was ist der Unterschied zwischen einem Weißbier und einem Pils?"}
+{"bucket": "french", "prompt": "Pourquoi les Français prennent-ils autant de temps pour déjeuner ?"}
+{"bucket": "french", "prompt": "Explique-moi la différence entre « tu » et « vous » à un étranger qui apprend le français."}
+{"bucket": "french", "prompt": "Comment fonctionne le système de la Sécurité sociale en France ?"}
+{"bucket": "french", "prompt": "Décris comment préparer une ratatouille traditionnelle."}
+{"bucket": "french", "prompt": "Pourquoi le mistral souffle-t-il si fort dans la vallée du Rhône ?"}
+{"bucket": "french", "prompt": "Quels sont les principaux avantages et inconvénients du vélo en ville ?"}
+{"bucket": "french", "prompt": "Explique le rôle du Sénat dans le système politique français."}
+{"bucket": "french", "prompt": "Que faut-il savoir avant de faire une randonnée dans les Pyrénées ?"}
+{"bucket": "french", "prompt": "Pourquoi dit-on « poser un lapin » à quelqu'un ?"}
+{"bucket": "french", "prompt": "Comment choisir un bon fromage de chèvre au marché ?"}
+{"bucket": "french", "prompt": "Explique-moi comment fonctionne le passé composé avec l'auxiliaire être."}
+{"bucket": "french", "prompt": "Quels sont les avantages de la lecture à voix haute pour les enfants ?"}
+{"bucket": "french", "prompt": "Décris brièvement l'histoire du canal du Midi."}
+{"bucket": "french", "prompt": "Comment réduire ma facture d'électricité pendant l'hiver ?"}
+{"bucket": "french", "prompt": "Pourquoi le Tour de France passe-t-il presque toujours par les Alpes ?"}
+{"bucket": "french", "prompt": "Quelle est la différence entre un croissant et un pain au chocolat, à part la forme ?"}
+{"bucket": "french", "prompt": "Explique pourquoi la baguette a été inscrite au patrimoine de l'UNESCO."}
+{"bucket": "french", "prompt": "Que faire à Lyon pendant un week-end pluvieux ?"}
+{"bucket": "french", "prompt": "Comment fonctionne un prêt immobilier à taux fixe ?"}
+{"bucket": "french", "prompt": "Pourquoi les marées sont-elles si fortes au Mont-Saint-Michel ?"}
+{"bucket": "french", "prompt": "Donne-moi trois conseils pour bien dormir quand il fait très chaud."}
+{"bucket": "french", "prompt": "Explique-moi ce qu'est la laïcité à la française."}
+{"bucket": "french", "prompt": "Comment distinguer un champignon comestible d'un champignon toxique en forêt ?"}
+{"bucket": "french", "prompt": "Pourquoi les impressionnistes peignaient-ils en plein air ?"}
+{"bucket": "french", "prompt": "Rédige un court paragraphe sur l'histoire du métro parisien."}
+{"bucket": "spanish", "prompt": "¿Por qué se cena tan tarde en España en comparación con otros países europeos?"}
+{"bucket": "spanish", "prompt": "Explícame la diferencia entre \"ser\" y \"estar\" con ejemplos sencillos."}
+{"bucket": "spanish", "prompt": "¿Cómo se prepara una tortilla de patatas tradicional?"}
+{"bucket": "spanish", "prompt": "¿Qué debo saber antes de hacer el Camino de Santiago?"}
+{"bucket": "spanish", "prompt": "Describe brevemente cómo funciona el sistema de comunidades autónomas."}
+{"bucket": "spanish", "prompt": "¿Por qué el Día de Muertos es tan importante en México?"}
+{"bucket": "spanish", "prompt": "Dame tres consejos para aprender a bailar salsa desde cero."}
+{"bucket": "spanish", "prompt": "¿Cuál es la diferencia entre el español de España y el de Argentina?"}
+{"bucket": "spanish", "prompt": "Explica cómo se forma un huracán en el Caribe."}
+{"bucket": "spanish", "prompt": "¿Qué es la siesta y sigue siendo una costumbre real hoy en día?"}
+{"bucket": "spanish", "prompt": "¿Cómo funciona el sistema de puntos del carné de conducir?"}
+{"bucket": "spanish", "prompt": "Escribe un párrafo corto sobre la historia de la Alhambra."}
+{"bucket": "spanish", "prompt": "¿Por qué el aceite de oliva virgen extra es tan apreciado?"}
+{"bucket": "spanish", "prompt": "¿Qué ventajas tiene vivir en una ciudad pequeña frente a una grande?"}
+{"bucket": "spanish", "prompt": "Explícame qué es el voseo y en qué países se usa."}
+{"bucket": "spanish", "prompt": "¿Cómo puedo ahorrar agua en casa durante una sequía?"}
+{"bucket": "spanish", "prompt": "Describe las reglas básicas del fútbol sala."}
+{"bucket": "spanish", "prompt": "¿Por qué Bogotá tiene un clima tan fresco a pesar de estar cerca del ecuador?"}
+{"bucket": "spanish", "prompt": "¿Qué es el mate y cómo se toma correctamente?"}
+{"bucket": "spanish", "prompt": "Recomiéndame qué ver en Lima en dos días."}
+{"bucket": "spanish", "prompt": "¿Cómo se hace el gazpacho y por qué se toma frío?"}
+{"bucket": "spanish", "prompt": "Explica la diferencia entre \"por\" y \"para\"."}
+{"bucket": "spanish", "prompt": "¿Por qué Machu Picchu fue construido en un lugar tan alto?"}
+{"bucket": "spanish", "prompt": "¿Qué debo tener en cuenta al adoptar un perro adulto?"}
+{"bucket": "spanish", "prompt": "Escribe un párrafo sobre la importancia de las Fallas de Valencia."}
+{"bucket": "japanese", "prompt": "日本の新幹線はなぜあんなに時間に正確なのですか？"}
+{"bucket": "japanese", "prompt": "「お疲れ様です」と「ご苦労様です」の使い分けを教えてください。"}
+{"bucket": "japanese", "prompt": "お味噌汁の基本的な作り方を簡単に説明してください。"}
+{"bucket": "japanese", "prompt": "尊敬語と謙譲語の違いを、例を使って教えてください。"}
+{"bucket": "japanese", "prompt": "京都で秋に訪れるべき場所を三つ紹介してください。"}
+{"bucket": "japanese", "prompt": "なぜ日本では靴を脱いで家に入るのですか？"}
+{"bucket": "japanese", "prompt": "梅雨はどうして起こるのか、わかりやすく説明してください。"}
+{"bucket": "japanese", "prompt": "初めて一人暮らしをする人へのアドバイスをください。"}
+{"bucket": "japanese", "prompt": "俳句の基本的なルールを教えてください。"}
+{"bucket": "japanese", "prompt": "日本の年金制度の仕組みを簡単に説明してください。"}
+{"bucket": "japanese", "prompt": "お花見の習慣はいつ頃から始まったのですか？"}
+{"bucket": "japanese", "prompt": "和食がユネスコの無形文化遺産に登録された理由は何ですか？"}
+{"bucket": "japanese", "prompt": "冬に部屋を効率よく暖める方法を教えてください。"}
+{"bucket": "japanese", "prompt": "「もったいない」という言葉の意味と使い方を説明してください。"}
+{"bucket": "japanese", "prompt": "富士山に登るときに気をつけるべきことは何ですか？"}
+{"bucket": "japanese", "prompt": "日本の温泉のマナーについて教えてください。"}
+{"bucket": "japanese", "prompt": "電車の中で電話をしないのはなぜですか？"}
+{"bucket": "japanese", "prompt": "納豆はどうやって作られますか？"}
+{"bucket": "japanese", "prompt": "折り紙の鶴の折り方を言葉で説明できますか？"}
+{"bucket": "japanese", "prompt": "日本語の「は」と「が」の違いを簡単に教えてください。"}
+{"bucket": "japanese", "prompt": "東京から日帰りで行けるおすすめの場所を教えてください。"}
+{"bucket": "japanese", "prompt": "地震が起きたときにまず何をすべきですか？"}
+{"bucket": "japanese", "prompt": "江戸時代の鎖国について短く説明してください。"}
+{"bucket": "japanese", "prompt": "ラーメンの醤油、味噌、塩、豚骨の違いを説明してください。"}
+{"bucket": "japanese", "prompt": "日本の学校の運動会はどんな行事ですか？"}
+{"bucket": "chinese", "prompt": "为什么中国人过春节要吃饺子？"}
+{"bucket": "chinese", "prompt": "请解释一下“的、地、得”三个字的用法区别。"}
+{"bucket": "chinese", "prompt": "高铁和普通火车有什么区别？"}
+{"bucket": "chinese", "prompt": "简单介绍一下如何泡一壶好的绿茶。"}
+{"bucket": "chinese", "prompt": "为什么北京的冬天这么干燥？"}
+{"bucket": "chinese", "prompt": "第一次去成都旅游，有什么推荐的地方？"}
+{"bucket": "chinese", "prompt": "请介绍一下二十四节气是怎么来的。"}
+{"bucket": "chinese", "prompt": "麻婆豆腐怎么做才正宗？"}
+{"bucket": "chinese", "prompt": "什么是“内卷”？这个词是怎么流行起来的？"}
+{"bucket": "chinese", "prompt": "请解释一下中国的高考制度。"}
+{"bucket": "chinese", "prompt": "为什么长城要修建在山脊上？"}
+{"bucket": "chinese", "prompt": "怎样才能提高普通话的发音？"}
+{"bucket": "chinese", "prompt": "中秋节为什么要吃月饼、赏月？"}
+{"bucket": "chinese", "prompt": "请简单说明一下太极拳对健康的好处。"}
+{"bucket": "chinese", "prompt": "微信支付和支付宝有什么不同？"}
+{"bucket": "chinese", "prompt": "请介绍一下“一带一路”的基本概念。"}
+{"bucket": "chinese", "prompt": "为什么上海的房价这么高？"}
+{"bucket": "chinese", "prompt": "端午节的由来是什么？"}
+{"bucket": "chinese", "prompt": "请解释一下“面子”在中国文化中的含义。"}
+{"bucket": "chinese", "prompt": "在中国租房时应该注意哪些问题？"}
+{"bucket": "chinese", "prompt": "为什么中国的很多城市都有“人民路”？"}
+{"bucket": "chinese", "prompt": "请简要介绍一下丝绸之路的历史。"}
+{"bucket": "chinese", "prompt": "怎样才能煮出松软的米饭？"}
+{"bucket": "chinese", "prompt": "请解释一下中医里的“上火”是什么意思。"}
+{"bucket": "chinese", "prompt": "请写一小段关于杭州西湖的介绍。"}
+{"bucket": "code_python", "prompt": "Write a Python function that returns the n-th Fibonacci number using memoization."}
+{"bucket": "code_python", "prompt": "Implement a small LRU cache class in Python with get and put methods."}
+{"bucket": "code_python", "prompt": "Write a Python function that checks whether a string is a valid IPv4 address."}
+{"bucket": "code_python", "prompt": "How do I read a large CSV file in Python without loading it all into memory?"}
+{"bucket": "code_python", "prompt": "Write a Python generator that yields all primes below a given n."}
+{"bucket": "code_python", "prompt": "Explain the difference between a list comprehension and a generator expression with an example."}
+{"bucket": "code_python", "prompt": "Write a Python decorator that retries a function up to three times on exception."}
+{"bucket": "code_python", "prompt": "Implement a function that merges two sorted lists into one sorted list in Python."}
+{"bucket": "code_python", "prompt": "What is the difference between __str__ and __repr__? Show a small class using both."}
+{"bucket": "code_python", "prompt": "Write a Python script that renames all .jpeg files in a folder to .jpg."}
+{"bucket": "code_python", "prompt": "Implement a stack using a Python list and explain the time complexity of each operation."}
+{"bucket": "code_python", "prompt": "Write a Python function to flatten an arbitrarily nested list."}
+{"bucket": "code_python", "prompt": "How do I use argparse to accept a required input path and an optional verbose flag?"}
+{"bucket": "code_python", "prompt": "Write a Python function that counts word frequencies in a text and returns the top five."}
+{"bucket": "code_python", "prompt": "Explain what *args and **kwargs do, with a short example."}
+{"bucket": "code_python", "prompt": "Write a Python class representing a bank account with deposit, withdraw and a balance property."}
+{"bucket": "code_python", "prompt": "Implement depth-first search on a graph given as an adjacency dict in Python."}
+{"bucket": "code_python", "prompt": "Write a Python function that validates a password: at least 8 characters, one digit, one uppercase letter."}
+{"bucket": "code_python", "prompt": "How do I make an HTTP GET request with the requests library and handle a timeout?"}
+{"bucket": "code_python", "prompt": "Write a Python function that converts a Roman numeral string to an integer."}
+{"bucket": "code_python", "prompt": "Explain Python's with statement and write a simple context manager."}
+{"bucket": "code_python", "prompt": "Write a Python function that groups a list of dicts by a given key."}
+{"bucket": "code_python", "prompt": "Implement the Sieve of Eratosthenes in Python and comment the key lines."}
+{"bucket": "code_python", "prompt": "Write a Python function that computes the median of a list without using the statistics module."}
+{"bucket": "code_python", "prompt": "Show how to use dataclasses to define a Point class with a distance method."}
+{"bucket": "code_other", "prompt": "Implement binary search over a sorted list in JavaScript and explain the edge cases."}
+{"bucket": "code_other", "prompt": "Write a SQL query that finds the three most recent orders per customer."}
+{"bucket": "code_other", "prompt": "Write a bash one-liner that counts the lines in every .py file under the current directory."}
+{"bucket": "code_other", "prompt": "Write a Rust function that reverses the words in a string."}
+{"bucket": "code_other", "prompt": "Write a C function that reverses a null-terminated string in place."}
+{"bucket": "code_other", "prompt": "Write a SQL query to find customers who have never placed an order."}
+{"bucket": "code_other", "prompt": "Write a bash script that backs up a directory into a dated tar.gz file."}
+{"bucket": "code_other", "prompt": "Implement a debounce function in JavaScript and explain when you would use it."}
+{"bucket": "code_other", "prompt": "Write a Rust program that reads lines from stdin and prints them in reverse order."}
+{"bucket": "code_other", "prompt": "Write a SQL query that returns each department's average salary, only for departments with more than five employees."}
+{"bucket": "code_other", "prompt": "Explain the difference between let, const and var in JavaScript."}
+{"bucket": "code_other", "prompt": "Write a C program that counts the number of vowels in a string passed as a command-line argument."}
+{"bucket": "code_other", "prompt": "Write a bash loop that renames all files with spaces in their names to use underscores."}
+{"bucket": "code_other", "prompt": "Implement a Promise-based sleep function in JavaScript and show how to use it with async/await."}
+{"bucket": "code_other", "prompt": "Write a Rust struct for a 2D vector with an impl block for addition and length."}
+{"bucket": "code_other", "prompt": "Write a SQL statement to create a table for blog posts with a foreign key to a users table."}
+{"bucket": "code_other", "prompt": "In bash, how do I check whether a variable is empty or unset, and what's the difference?"}
+{"bucket": "code_other", "prompt": "Write a JavaScript function that deep clones a plain object without using JSON."}
+{"bucket": "code_other", "prompt": "Write a C function that computes the greatest common divisor of two integers."}
+{"bucket": "code_other", "prompt": "Explain Rust's ownership rules with a short example that fails to compile and a fix."}
+{"bucket": "code_other", "prompt": "Write a SQL query that pivots monthly sales into columns for January, February and March."}
+{"bucket": "code_other", "prompt": "Write a bash script that checks whether a website is reachable and logs the result with a timestamp."}
+{"bucket": "code_other", "prompt": "Implement an array chunk function in JavaScript that splits an array into groups of size n."}
+{"bucket": "code_other", "prompt": "Write a C snippet that dynamically allocates an array of 100 integers and frees it safely."}
+{"bucket": "code_other", "prompt": "Write a Rust function that returns the most frequent element in a vector of integers."}
+{"bucket": "math_word", "prompt": "A train travels 180 km in 2.5 hours. What is its average speed in m/s?"}
+{"bucket": "math_word", "prompt": "How many ways can 5 people sit in a row if two of them insist on sitting together?"}
+{"bucket": "math_word", "prompt": "A bakery sells muffins at 3 for $5. How much do 27 muffins cost, and how much is that per muffin?"}
+{"bucket": "math_word", "prompt": "A rectangular garden is 12 m long and 8 m wide. A path 1 m wide runs around the outside. What is the area of the path?"}
+{"bucket": "math_word", "prompt": "Tom is twice as old as Sara. In six years, he will be 1.5 times her age. How old are they now?"}
+{"bucket": "math_word", "prompt": "A tank fills in 6 hours with one pipe and 9 hours with another. How long does it take with both pipes open?"}
+{"bucket": "math_word", "prompt": "A shirt is discounted 20%, then a further 15% off the sale price. What is the total percentage discount?"}
+{"bucket": "math_word", "prompt": "If 3 workers can paint a fence in 8 hours, how long would 4 workers take at the same rate?"}
+{"bucket": "math_word", "prompt": "A car uses 6.5 litres per 100 km. How much fuel is needed for a 420 km trip, and what does it cost at 1.80 per litre?"}
+{"bucket": "math_word", "prompt": "A jar contains 4 red, 5 blue and 6 green marbles. What is the probability of drawing two green marbles without replacement?"}
+{"bucket": "math_word", "prompt": "A recipe for 4 people needs 300 g of flour. How much flour is needed for 7 people?"}
+{"bucket": "math_word", "prompt": "A ladder 5 m long leans against a wall with its foot 3 m from the base. How high up the wall does it reach?"}
+{"bucket": "math_word", "prompt": "You invest $2000 at 4% annual interest compounded yearly. How much is it worth after 3 years?"}
+{"bucket": "math_word", "prompt": "Two cyclists start 60 km apart and ride toward each other at 15 km/h and 25 km/h. After how long do they meet?"}
+{"bucket": "math_word", "prompt": "A box has a volume of 480 cubic cm and a square base with side 8 cm. What is its height?"}
+{"bucket": "math_word", "prompt": "A class has 30 students; 18 play football, 12 play basketball and 5 play both. How many play neither?"}
+{"bucket": "math_word", "prompt": "A phone plan costs $20 per month plus $0.05 per minute. How many minutes make the bill exactly $35?"}
+{"bucket": "math_word", "prompt": "A store's revenue rose from $48,000 to $55,200. What is the percentage increase?"}
+{"bucket": "math_word", "prompt": "A clock shows 3:00. What is the angle between the hands, and at what time after 3 do they first overlap?"}
+{"bucket": "math_word", "prompt": "It takes 12 minutes to walk to the station at 5 km/h. How far is the station, and how long would it take at 6 km/h?"}
+{"bucket": "math_word", "prompt": "A cylindrical can has radius 4 cm and height 10 cm. How much metal (total surface area) is needed to make it?"}
+{"bucket": "math_word", "prompt": "In a survey, 60% of 250 people liked tea, and one third of those also liked coffee. How many liked both?"}
+{"bucket": "math_word", "prompt": "A plane flies 900 km with a tailwind in 1.5 hours and returns against the wind in 2 hours. What are the plane's airspeed and the wind speed?"}
+{"bucket": "math_word", "prompt": "A number is doubled, then 7 is added, and the result is 31. What was the number? Explain each step."}
+{"bucket": "math_word", "prompt": "Three friends split a bill of $87 so that Ana pays twice as much as Ben and Cara pays $12 more than Ben. How much does each pay?"}
+{"bucket": "math_symbolic", "prompt": "Compute the sum of the first 40 odd numbers and show the steps."}
+{"bucket": "math_symbolic", "prompt": "Solve for x: 3x + 7 = 2x - 5, and check the solution."}
+{"bucket": "math_symbolic", "prompt": "What is the probability of rolling two dice and getting a sum of 8?"}
+{"bucket": "math_symbolic", "prompt": "Find the derivative of f(x) = x^3 - 4x + sin(x)."}
+{"bucket": "math_symbolic", "prompt": "Evaluate the integral of (2x + 1)/(x^2 + x) dx."}
+{"bucket": "math_symbolic", "prompt": "Solve the quadratic x^2 - 5x + 6 = 0 and verify both roots."}
+{"bucket": "math_symbolic", "prompt": "Find the limit of sin(3x)/x as x approaches 0."}
+{"bucket": "math_symbolic", "prompt": "Compute the determinant of the matrix [[2, 1], [5, 3]] and find its inverse."}
+{"bucket": "math_symbolic", "prompt": "If X ~ Binomial(n=10, p=0.3), what is P(X = 2)?"}
+{"bucket": "math_symbolic", "prompt": "Simplify (x^2 - 9)/(x^2 + 6x + 9)."}
+{"bucket": "math_symbolic", "prompt": "Find all real solutions of |2x - 3| = 7."}
+{"bucket": "math_symbolic", "prompt": "Evaluate the sum from k=1 to n of k^2 for n = 10, and state the general formula."}
+{"bucket": "math_symbolic", "prompt": "Find the equation of the tangent line to y = x^2 at x = 3."}
+{"bucket": "math_symbolic", "prompt": "Solve the system: 2x + y = 7 and x - y = 2."}
+{"bucket": "math_symbolic", "prompt": "Compute d/dx of ln(x^2 + 1)."}
+{"bucket": "math_symbolic", "prompt": "Find the eigenvalues of the matrix [[4, 1], [2, 3]]."}
+{"bucket": "math_symbolic", "prompt": "What is the expected value of a single roll of a fair six-sided die, and what is its variance?"}
+{"bucket": "math_symbolic", "prompt": "Expand (a + b)^4 using the binomial theorem."}
+{"bucket": "math_symbolic", "prompt": "Solve 2^(x+1) = 32 for x."}
+{"bucket": "math_symbolic", "prompt": "Find the integral of x e^x dx using integration by parts."}
+{"bucket": "math_symbolic", "prompt": "Does the series sum of 1/n^2 from n=1 to infinity converge? If so, what is its value?"}
+{"bucket": "math_symbolic", "prompt": "Compute gcd(252, 198) using the Euclidean algorithm."}
+{"bucket": "math_symbolic", "prompt": "Find the maximum of f(x) = -x^2 + 6x - 5 and the x at which it occurs."}
+{"bucket": "math_symbolic", "prompt": "If P(A) = 0.4, P(B) = 0.5 and P(A and B) = 0.2, are A and B independent? Compute P(A or B)."}
+{"bucket": "math_symbolic", "prompt": "Solve the inequality (x - 1)(x + 2) < 0."}
+{"bucket": "science", "prompt": "Why does ice float on water when most solids sink in their own liquid?"}
+{"bucket": "science", "prompt": "Explain how photosynthesis turns light into chemical energy."}
+{"bucket": "science", "prompt": "What causes the seasons, and why isn't it the distance from the Sun?"}
+{"bucket": "science", "prompt": "How does a transistor act as a switch?"}
+{"bucket": "science", "prompt": "Why is the ocean salty but most lakes are not?"}
+{"bucket": "science", "prompt": "Explain what DNA replication is and why it matters for cell division."}
+{"bucket": "science", "prompt": "What is the greenhouse effect, in physical terms?"}
+{"bucket": "science", "prompt": "Why do metals conduct electricity but rubber does not?"}
+{"bucket": "science", "prompt": "How do plate tectonics cause earthquakes?"}
+{"bucket": "science", "prompt": "Explain the difference between speed, velocity and acceleration."}
+{"bucket": "science", "prompt": "What are antibiotics and why don't they work against viruses?"}
+{"bucket": "science", "prompt": "How does a rainbow form, and why is red always on the outside?"}
+{"bucket": "science", "prompt": "Explain what entropy means using an everyday example."}
+{"bucket": "science", "prompt": "Why does helium make your voice sound higher?"}
+{"bucket": "science", "prompt": "How do neurons transmit signals to each other?"}
+{"bucket": "science", "prompt": "What is the difference between nuclear fission and fusion?"}
+{"bucket": "science", "prompt": "Why do stars twinkle but planets usually don't?"}
+{"bucket": "science", "prompt": "Explain how a catalyst speeds up a chemical reaction."}
+{"bucket": "science", "prompt": "How does the human body regulate its temperature?"}
+{"bucket": "science", "prompt": "What is a black hole, and what happens at the event horizon?"}
+{"bucket": "science", "prompt": "Why does salt melt ice on roads?"}
+{"bucket": "science", "prompt": "Explain how sound travels through air and why it can't travel in space."}
+{"bucket": "science", "prompt": "What is the role of mitochondria in a cell?"}
+{"bucket": "science", "prompt": "Why does the Moon have phases?"}
+{"bucket": "science", "prompt": "How do magnets work at the atomic level?"}
+{"bucket": "history_culture", "prompt": "What caused the fall of the Western Roman Empire?"}
+{"bucket": "history_culture", "prompt": "Explain the significance of the printing press in European history."}
+{"bucket": "history_culture", "prompt": "Who were the Silk Road traders and what did they exchange besides goods?"}
+{"bucket": "history_culture", "prompt": "Why did the Berlin Wall come down in 1989?"}
+{"bucket": "history_culture", "prompt": "Describe the main ideas of the Renaissance in a short paragraph."}
+{"bucket": "history_culture", "prompt": "What was the Meiji Restoration and how did it change Japan?"}
+{"bucket": "history_culture", "prompt": "Why is tea so central to British culture?"}
+{"bucket": "history_culture", "prompt": "What role did the Nile play in ancient Egyptian civilization?"}
+{"bucket": "history_culture", "prompt": "Explain the origins of the Olympic Games."}
+{"bucket": "history_culture", "prompt": "What was the Harlem Renaissance?"}
+{"bucket": "history_culture", "prompt": "Why did the Industrial Revolution begin in Britain?"}
+{"bucket": "history_culture", "prompt": "Describe the cultural importance of Diwali."}
+{"bucket": "history_culture", "prompt": "What was the Cold War, and why is it called cold?"}
+{"bucket": "history_culture", "prompt": "Who was Ibn Battuta and why are his travels significant?"}
+{"bucket": "history_culture", "prompt": "How did the Black Death change medieval Europe?"}
+{"bucket": "history_culture", "prompt": "What is the story behind the Statue of Liberty?"}
+{"bucket": "history_culture", "prompt": "Explain the significance of the Magna Carta."}
+{"bucket": "history_culture", "prompt": "Why is Carnival in Rio de Janeiro so famous?"}
+{"bucket": "history_culture", "prompt": "What was the Ottoman Empire's role in the spread of coffee?"}
+{"bucket": "history_culture", "prompt": "Describe the origins of jazz music."}
+{"bucket": "history_culture", "prompt": "What happened during the partition of India in 1947?"}
+{"bucket": "history_culture", "prompt": "Why are the pyramids of Giza considered an engineering marvel?"}
+{"bucket": "history_culture", "prompt": "What was the significance of the Bauhaus school?"}
+{"bucket": "history_culture", "prompt": "How did the Maori arrive in New Zealand, and what traditions did they bring?"}
+{"bucket": "history_culture", "prompt": "Explain why the French Revolution mattered beyond France."}
+{"bucket": "creative_writing", "prompt": "Write a four-line poem about rain that does not use the word wet."}
+{"bucket": "creative_writing", "prompt": "Write a very short story (under 150 words) about a lighthouse keeper who receives an unexpected letter."}
+{"bucket": "creative_writing", "prompt": "Write a limerick about a cat who learns to code."}
+{"bucket": "creative_writing", "prompt": "Write three haiku about a city at dawn."}
+{"bucket": "creative_writing", "prompt": "Write a short story in exactly five sentences where each sentence starts with a different vowel."}
+{"bucket": "creative_writing", "prompt": "Write the first eight lines of a sonnet about forgetting someone's name."}
+{"bucket": "creative_writing", "prompt": "Write a short monologue for a robot that has just discovered music."}
+{"bucket": "creative_writing", "prompt": "Write a poem about coffee in the voice of a pirate."}
+{"bucket": "creative_writing", "prompt": "Tell a bedtime story about a snail who wants to see the ocean, in under 200 words."}
+{"bucket": "creative_writing", "prompt": "Write a short scene of dialogue between two strangers stuck in an elevator, with no narration."}
+{"bucket": "creative_writing", "prompt": "Write a poem where every line ends with a color."}
+{"bucket": "creative_writing", "prompt": "Write a 100-word story that begins with the sentence: The last train had already left."}
+{"bucket": "creative_writing", "prompt": "Write a short fable with a moral about patience, featuring a tortoise and a drone."}
+{"bucket": "creative_writing", "prompt": "Write a free-verse poem about a grandmother's kitchen that mentions at least three smells."}
+{"bucket": "creative_writing", "prompt": "Write a short story told entirely through text messages."}
+{"bucket": "creative_writing", "prompt": "Write two stanzas of a poem about waiting for the first snow, using a repeated refrain."}
+{"bucket": "creative_writing", "prompt": "Write a micro-story from the point of view of a lost umbrella."}
+{"bucket": "creative_writing", "prompt": "Write a poem about the ocean without using the words blue, water or wave."}
+{"bucket": "creative_writing", "prompt": "Write a short scene where a detective interviews a talking parrot."}
+{"bucket": "creative_writing", "prompt": "Write an acrostic poem spelling the word AUTUMN."}
+{"bucket": "creative_writing", "prompt": "Write a three-paragraph story where the twist is revealed only in the final sentence."}
+{"bucket": "creative_writing", "prompt": "Write a short love letter from a mountain to a river."}
+{"bucket": "creative_writing", "prompt": "Write a nursery rhyme about brushing teeth."}
+{"bucket": "creative_writing", "prompt": "Write a piece of flash fiction that includes a key, a map and a broken clock."}
+{"bucket": "creative_writing", "prompt": "Write a poem in the style of a weather forecast, but about someone's mood."}
+{"bucket": "legal_medical_advice", "prompt": "What is the difference between a cold and the flu?"}
+{"bucket": "legal_medical_advice", "prompt": "What are the typical symptoms of iron deficiency?"}
+{"bucket": "legal_medical_advice", "prompt": "What does a lease's security deposit clause usually cover?"}
+{"bucket": "legal_medical_advice", "prompt": "How much water should an adult drink per day, and does coffee count?"}
+{"bucket": "legal_medical_advice", "prompt": "What is the difference between a copyright and a trademark?"}
+{"bucket": "legal_medical_advice", "prompt": "What should I do if I get a small kitchen burn?"}
+{"bucket": "legal_medical_advice", "prompt": "What does power of attorney mean?"}
+{"bucket": "legal_medical_advice", "prompt": "Why do doctors recommend finishing a full course of antibiotics?"}
+{"bucket": "legal_medical_advice", "prompt": "What is a tenant's notice period when ending a rental agreement, in general terms?"}
+{"bucket": "legal_medical_advice", "prompt": "What are common signs of dehydration in children?"}
+{"bucket": "legal_medical_advice", "prompt": "How does a trust differ from a will when passing on assets?"}
+{"bucket": "legal_medical_advice", "prompt": "Is it generally safe to take ibuprofen and paracetamol together?"}
+{"bucket": "legal_medical_advice", "prompt": "What does it mean to be a contractor instead of an employee?"}
+{"bucket": "legal_medical_advice", "prompt": "What are the early warning signs of a stroke?"}
+{"bucket": "legal_medical_advice", "prompt": "What is a non-disclosure agreement and what does it typically cover?"}
+{"bucket": "legal_medical_advice", "prompt": "Who is generally eligible to donate blood?"}
+{"bucket": "legal_medical_advice", "prompt": "What does statute of limitations mean?"}
+{"bucket": "legal_medical_advice", "prompt": "How much sleep do teenagers need, and why?"}
+{"bucket": "legal_medical_advice", "prompt": "What is the general purpose of a consumer warranty?"}
+{"bucket": "legal_medical_advice", "prompt": "What are common causes of lower back pain in office workers?"}
+{"bucket": "legal_medical_advice", "prompt": "What rights does a passenger generally have if a flight is cancelled in the EU?"}
+{"bucket": "legal_medical_advice", "prompt": "I twisted my ankle. How can I tell a sprain from a strain, and when should I see a doctor?"}
+{"bucket": "legal_medical_advice", "prompt": "What is small claims court used for?"}
+{"bucket": "legal_medical_advice", "prompt": "How does sunscreen SPF work, and what number should most people use?"}
+{"bucket": "legal_medical_advice", "prompt": "What is informed consent in a medical setting?"}
+{"bucket": "casual_chat", "prompt": "Hey, how's it going?"}
+{"bucket": "casual_chat", "prompt": "Any good ideas for what to cook tonight?"}
+{"bucket": "casual_chat", "prompt": "I'm so bored. Entertain me."}
+{"bucket": "casual_chat", "prompt": "Got any fun facts?"}
+{"bucket": "casual_chat", "prompt": "It's raining again. What do you do on rainy days?"}
+{"bucket": "casual_chat", "prompt": "Do you have a favorite season?"}
+{"bucket": "casual_chat", "prompt": "I just finished a huge project. How should I celebrate?"}
+{"bucket": "casual_chat", "prompt": "Tell me a joke."}
+{"bucket": "casual_chat", "prompt": "What's a good movie for a lazy Sunday?"}
+{"bucket": "casual_chat", "prompt": "I can't sleep. Any tips?"}
+{"bucket": "casual_chat", "prompt": "Coffee or tea? Convince me."}
+{"bucket": "casual_chat", "prompt": "What's something interesting you learned recently?"}
+{"bucket": "casual_chat", "prompt": "Monday mornings, am I right?"}
+{"bucket": "casual_chat", "prompt": "I'm thinking of getting a dog. Thoughts?"}
+{"bucket": "casual_chat", "prompt": "What would you do with a free afternoon?"}
+{"bucket": "casual_chat", "prompt": "Can you recommend a book to read on a long flight?"}
+{"bucket": "casual_chat", "prompt": "I feel like I'm stuck in a rut. Any advice?"}
+{"bucket": "casual_chat", "prompt": "If you could visit any city, which one?"}
+{"bucket": "casual_chat", "prompt": "What's a good hobby to pick up in the winter?"}
+{"bucket": "casual_chat", "prompt": "Give me a random topic to think about."}
+{"bucket": "casual_chat", "prompt": "How do I make small talk at a party?"}
+{"bucket": "casual_chat", "prompt": "I burned dinner. Cheer me up."}
+{"bucket": "casual_chat", "prompt": "Is it weird that I like the smell of gasoline?"}
+{"bucket": "casual_chat", "prompt": "What's the best way to spend a rainy weekend?"}
+{"bucket": "casual_chat", "prompt": "Quick question: pineapple on pizza, yes or no?"}
+{"bucket": "long_instruction", "prompt": "I am preparing an onboarding document for new employees at a small software company. Please write it with these requirements: 1) Start with a warm two-sentence welcome. 2) List the three most important tools they will use on day one, picking reasonable examples. 3) Explain the weekly meeting rhythm in one short paragraph. 4) End with a bullet list of three things to do before the end of the first week. Keep the whole thing under 200 words and use a friendly but professional tone."}
+{"bucket": "long_instruction", "prompt": "Plan a three-day trip to Lisbon for two adults who like food and architecture. Requirements: 1) Give each day a short heading. 2) Include one morning, one afternoon and one evening activity per day. 3) Mention at least one neighborhood by name each day. 4) Suggest one restaurant type per day without inventing specific restaurant names. 5) Keep the total under 220 words. 6) Finish with a one-sentence packing tip appropriate for September weather."}
+{"bucket": "long_instruction", "prompt": "Write a product description for a reusable stainless-steel water bottle. Follow these rules: 1) Open with a single-sentence hook. 2) Include exactly three feature bullets, each under twelve words. 3) Mention the 750 ml capacity and that it keeps drinks cold for 24 hours. 4) Avoid the words eco-friendly and premium. 5) Close with a call to action of at most ten words. The target audience is hikers and commuters."}
+{"bucket": "long_instruction", "prompt": "Help me draft an email to my landlord about a leaking kitchen tap. Requirements: 1) Use a polite, formal tone. 2) State the problem in the first sentence. 3) Mention that it started three days ago and is getting worse. 4) Ask for a repair within one week. 5) Offer two time windows when I am home: weekday evenings and Saturday mornings. 6) Keep it under 150 words and sign off as Tenant, Flat 4B."}
+{"bucket": "long_instruction", "prompt": "Explain how to make a basic vinaigrette to a complete beginner. Requirements: 1) List the ingredients with quantities for about four servings. 2) Describe the steps in numbered order, no more than five steps. 3) Include one tip for fixing a dressing that is too sour. 4) Suggest two variations using different herbs or acids. 5) Do not mention any brand names. Keep everything under 180 words."}
+{"bucket": "long_instruction", "prompt": "Write a short summary of the water cycle for a ten-year-old. Requirements: 1) Use exactly four short paragraphs, one each for evaporation, condensation, precipitation and collection. 2) Include one simple analogy in each paragraph. 3) Avoid any word longer than twelve letters. 4) End with a single question the child could investigate at home. The total length should be between 120 and 200 words."}
+{"bucket": "long_instruction", "prompt": "I need a study plan for learning basic Spanish in eight weeks. Requirements: 1) Split the plan into four two-week blocks with a heading for each. 2) Give each block one grammar focus and one vocabulary theme. 3) Recommend a daily time budget of 30 minutes and say how to split it. 4) Include one way to practice speaking in each block. 5) End with two sentences on how to measure progress. Keep the response under 230 words."}
+{"bucket": "long_instruction", "prompt": "Write a short technical explanation of what an API is for a non-technical manager. Rules: 1) Start with a real-world analogy, but not the restaurant waiter one, which is overused. 2) Define the term in one plain sentence. 3) Give two concrete business examples. 4) Explain in two sentences why rate limits exist. 5) Avoid all acronyms except API itself. 6) Keep it between 120 and 200 words."}
+{"bucket": "long_instruction", "prompt": "Draft a set of house rules for a shared flat with four people. Requirements: 1) Cover cleaning, noise, guests and shared groceries, each in its own numbered section. 2) Each section should be two or three sentences. 3) Include one concrete rotation schedule for cleaning. 4) Use a neutral, non-preachy tone. 5) End with one sentence on how to propose changes to the rules. Keep it under 200 words in total."}
+{"bucket": "long_instruction", "prompt": "Write a review of a fictional wireless mouse. Requirements: 1) Give it a name and a price around 40 dollars. 2) Mention battery life, comfort and connectivity, in that order. 3) Include one genuine drawback. 4) Assign a score out of ten and justify it in one sentence. 5) Do not use exclamation marks anywhere. 6) Keep the review between 130 and 200 words and write it in the first person."}
+{"bucket": "long_instruction", "prompt": "Create a beginner-friendly weekly workout plan. Requirements: 1) Three workout days and two active-rest days, labelled by weekday. 2) Each workout day lists four exercises with sets and reps. 3) No equipment beyond a mat. 4) Include a one-sentence warm-up and a one-sentence cool-down instruction. 5) Add a short note on when to progress to harder variations. Keep the total under 220 words and use bullet points for the exercises."}
+{"bucket": "long_instruction", "prompt": "Summarize the arguments for and against a four-day work week. Requirements: 1) Present exactly three arguments on each side. 2) Use two labelled sections, For and Against. 3) Each argument is one sentence with a brief justification. 4) After both sections, write a two-sentence balanced conclusion that does not take a side. 5) Do not cite specific studies or companies. Keep the whole response under 200 words."}
+{"bucket": "long_instruction", "prompt": "Write instructions for setting up a small vegetable garden in raised beds. Requirements: 1) Begin with a list of the materials needed. 2) Describe bed placement in terms of sunlight and drainage. 3) Recommend three easy vegetables for a first-year gardener with one sentence each on why. 4) Give a watering guideline for summer. 5) Mention one common mistake to avoid. Keep the whole answer under 220 words and use numbered steps for the setup."}
+{"bucket": "long_instruction", "prompt": "I want to give a five-minute talk about the history of chess. Please prepare an outline with these constraints: 1) Exactly five sections, each with a title and two or three bullet points. 2) The first section must be a hook that grabs attention. 3) Include the origin in India and the spread through Persia and Europe. 4) The last section should end with a memorable closing line. 5) Do not exceed 200 words in total."}
+{"bucket": "long_instruction", "prompt": "Write a customer-support reply to someone whose package arrived damaged. Requirements: 1) Apologize sincerely in the first sentence without repeating the apology later. 2) Ask for a photo of the damage and the order number. 3) Offer a choice between a replacement and a refund. 4) State that a replacement ships within two business days. 5) Keep it under 140 words. 6) Sign off with the first name Maya only."}
+{"bucket": "long_instruction", "prompt": "Describe how to prepare for a power outage at home. Structure the answer as follows: 1) A short intro sentence. 2) A checklist of six items to keep ready. 3) Three actions to take in the first ten minutes of an outage. 4) Two safety warnings, one about candles and one about generators. 5) A closing line about checking on neighbors. Use a heading for each part and keep it under 200 words."}
+{"bucket": "long_instruction", "prompt": "Write a short explainer on how recycling of aluminum cans works. Requirements: 1) Describe the process in five numbered steps from collection to new can. 2) Mention the energy saved compared to producing new aluminum, in approximate percentage terms. 3) Include one sentence on why cans should be rinsed. 4) End with a fun fact. 5) Do not use the word sustainable. Keep it between 120 and 180 words."}
+{"bucket": "long_instruction", "prompt": "Prepare a short briefing for someone about to adopt a rescue cat. Requirements: 1) Cover the first 24 hours, the first week and the first month, each as a separate paragraph. 2) Include at least one item to buy in each paragraph. 3) Mention when to schedule a vet visit. 4) Give one sign that the cat is settling in well. 5) Use simple language and no bullet points. Keep it under 200 words."}
+{"bucket": "long_instruction", "prompt": "Write a brief guide to giving constructive feedback at work. Requirements: 1) Present a three-step model with a name for each step. 2) Give a one-sentence example for each step using a coworker who missed a deadline. 3) List two things to avoid saying. 4) Explain in one sentence why timing matters. 5) Keep the tone practical rather than motivational. The total length should be under 200 words."}
+{"bucket": "long_instruction", "prompt": "I'm hosting a board game night for six people. Please put together a plan. Requirements: 1) Suggest a timeline from 7 pm to 11 pm with three time slots. 2) Recommend one game type per slot, no specific titles needed, with a reason. 3) Include a snack list of five items that don't leave greasy fingers. 4) Add one tip for including a guest who has never played board games. 5) Keep it under 200 words."}
+{"bucket": "long_instruction", "prompt": "Write a short FAQ for a community library's book-lending policy. Requirements: 1) Exactly five questions, each followed by a two-sentence answer. 2) Cover loan period, renewals, late fees, lost books and reserving items. 3) Use a loan period of three weeks and a late fee of ten cents per day. 4) Keep the tone friendly. 5) Do not use any bold or italic formatting. Total length under 200 words."}
+{"bucket": "long_instruction", "prompt": "Explain the rules of rock-paper-scissors to a child and then extend the game. Requirements: 1) Explain the standard rules in three sentences. 2) Propose a fourth option that beats exactly two of the original three and loses to one. 3) Show the resulting full set of outcomes as a short list. 4) Suggest one way to make the game fair again if it isn't. 5) Keep the whole thing under 180 words."}
+{"bucket": "long_instruction", "prompt": "Write a short pitch for a mobile app that helps people remember to water their plants. Requirements: 1) Open with the problem in one sentence. 2) Describe the core feature and two secondary features. 3) Name a target user in one sentence. 4) Explain how the app makes money in two sentences. 5) End with a tagline of at most six words. 6) Do not use the word revolutionary. Keep it under 180 words."}
+{"bucket": "long_instruction", "prompt": "Describe how to safely change a flat tire on a car. Requirements: 1) Start with a three-item safety checklist before touching the car. 2) Give the steps in numbered order, at most eight steps. 3) Say when to place the wheel chocks and whether to loosen the lug nuts before or after jacking. 4) End with what to do with the spare afterward. 5) Use plain language and keep it under 220 words."}
+{"bucket": "long_instruction", "prompt": "Write a short comparison of e-books and printed books for a school newsletter. Requirements: 1) Use two paragraphs, one per format, each with two advantages and one disadvantage. 2) Follow with a three-row comparison table covering cost, portability and eye strain. 3) Add a one-sentence recommendation for students specifically. 4) Avoid the phrase at the end of the day. 5) Keep the entire response under 200 words."}
+{"bucket": "tables_lists", "prompt": "Make a table comparing three popular programming languages by typing discipline, typical use case and release year."}
+{"bucket": "tables_lists", "prompt": "Give me a bullet list of ten essential items for a weekend camping trip."}
+{"bucket": "tables_lists", "prompt": "Return a JSON object describing a fictional book with the fields title, author, year, genres (an array) and rating."}
+{"bucket": "tables_lists", "prompt": "Create a markdown table of the planets in the solar system with their approximate diameter and number of known moons."}
+{"bucket": "tables_lists", "prompt": "List the seven continents with their largest country by area as a two-column table."}
+{"bucket": "tables_lists", "prompt": "Produce a JSON array of five European capitals with their country and approximate population."}
+{"bucket": "tables_lists", "prompt": "Give me a numbered list of the steps to make a cup of pour-over coffee."}
+{"bucket": "tables_lists", "prompt": "Make a table of five common kitchen herbs and the dishes they pair well with."}
+{"bucket": "tables_lists", "prompt": "Write a bullet list of the pros and cons of remote work, at least four of each."}
+{"bucket": "tables_lists", "prompt": "Produce a markdown table with the days of the week in English, Spanish and German."}
+{"bucket": "tables_lists", "prompt": "Return a JSON object representing a to-do list with three tasks, each having an id, a title and a done flag."}
+{"bucket": "tables_lists", "prompt": "Create a table comparing cats and dogs as pets across five criteria."}
+{"bucket": "tables_lists", "prompt": "List ten common SQL commands in a table with a one-line description of each."}
+{"bucket": "tables_lists", "prompt": "Give me a bullet list of eight classic novels with the author and year in parentheses."}
+{"bucket": "tables_lists", "prompt": "Make a shopping list in JSON for a simple pasta dinner, grouped by store section."}
+{"bucket": "tables_lists", "prompt": "Create a table of the first ten elements of the periodic table with symbol and atomic number."}
+{"bucket": "tables_lists", "prompt": "Produce a nested bullet list outlining the structure of a typical scientific paper."}
+{"bucket": "tables_lists", "prompt": "Give me a table of five world currencies with their ISO code and symbol."}
+{"bucket": "tables_lists", "prompt": "Write an example JSON document for a user profile with name, email, birthday and a list of addresses."}
+{"bucket": "tables_lists", "prompt": "Make a markdown table with a weekly meal plan from Monday to Sunday for breakfast and dinner."}
+{"bucket": "tables_lists", "prompt": "List the primary and secondary colors in a two-column table showing how each secondary color is mixed."}
+{"bucket": "tables_lists", "prompt": "Return a CSV-formatted list of five mountains with their country and elevation in meters."}
+{"bucket": "tables_lists", "prompt": "Give me a bullet list of common HTTP status codes grouped by category."}
+{"bucket": "tables_lists", "prompt": "Make a table comparing three modes of transport for a 300 km trip by cost, time and CO2 emissions."}
+{"bucket": "tables_lists", "prompt": "Produce a JSON object representing a three-day weather forecast with high, low and condition for each day."}
+{"bucket": "roleplay", "prompt": "You are a medieval innkeeper. A tired traveler walks in at midnight. Greet them and describe what you can offer."}
+{"bucket": "roleplay", "prompt": "Pretend you are a tour guide on Mars in the year 2200. Give me the welcome speech."}
+{"bucket": "roleplay", "prompt": "Act as a grumpy but kind-hearted librarian. I just returned a book three months late."}
+{"bucket": "roleplay", "prompt": "You are a pirate captain explaining to a new recruit the rules of the ship."}
+{"bucket": "roleplay", "prompt": "Play a friendly barista who remembers every customer's order. I walk in for the first time in a year."}
+{"bucket": "roleplay", "prompt": "You are a detective in 1920s Chicago. Describe the crime scene you just walked into."}
+{"bucket": "roleplay", "prompt": "Roleplay as a wise old tree telling a child about the seasons you have seen."}
+{"bucket": "roleplay", "prompt": "Act as a spaceship's AI that has just woken the crew from cryosleep. Give the status report."}
+{"bucket": "roleplay", "prompt": "You are a chef judging a cooking competition. Critique my dish: burnt toast with ketchup."}
+{"bucket": "roleplay", "prompt": "Pretend to be a Victorian butler answering the door to an unexpected guest."}
+{"bucket": "roleplay", "prompt": "You are a dragon who is tired of knights. Explain your side of the story."}
+{"bucket": "roleplay", "prompt": "Act as a sports commentator narrating a snail race with great excitement."}
+{"bucket": "roleplay", "prompt": "You are a wizard's apprentice who just broke an important potion. Explain what happened to your master."}
+{"bucket": "roleplay", "prompt": "Roleplay as a museum guard at night who hears a strange noise from the Egyptian wing."}
+{"bucket": "roleplay", "prompt": "Act as a patient driving instructor giving me my very first lesson."}
+{"bucket": "roleplay", "prompt": "You are a ghost who is confused about why nobody in the house can see you."}
+{"bucket": "roleplay", "prompt": "Pretend to be a cat explaining to a new kitten how the humans work."}
+{"bucket": "roleplay", "prompt": "You are a train conductor on the Orient Express in 1935 announcing the next stop."}
+{"bucket": "roleplay", "prompt": "Act as a life coach for a houseplant that feels unmotivated."}
+{"bucket": "roleplay", "prompt": "You are a time traveler from 1850 seeing a smartphone for the first time. React."}
+{"bucket": "roleplay", "prompt": "Roleplay as a friendly alien trying to order food at a diner."}
+{"bucket": "roleplay", "prompt": "You are a knight explaining to the king why the quest failed."}
+{"bucket": "roleplay", "prompt": "Act as a radio DJ introducing the next song on a late-night jazz show."}
+{"bucket": "roleplay", "prompt": "Pretend to be a lighthouse that has feelings, on a stormy night."}
+{"bucket": "roleplay", "prompt": "You are a shopkeeper in a fantasy town selling enchanted items. I have 10 gold coins. What can I buy?"}

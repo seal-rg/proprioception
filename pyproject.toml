@@ -1,0 +1,85 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+  "setuptools>=68.2.2",
+  "wheel>=0.41.2",
+]
+
+[project]
+name = "proprioception"
+requires-python = ">=3.12"
+version = "0.1"
+
+dependencies = [
+  "vllm==0.25.1",
+  "flashinfer-jit-cache==0.6.13",
+  "verifiers==0.2.0",
+  "mcp>=1.10,<2",
+  "openai",
+  "httpx",
+  "pydantic",
+  "numpy",
+  "wandb",
+]
+
+[project.optional-dependencies]
+eval = [
+  "lm-eval[api,math]==0.4.13",
+  "langdetect==1.0.9",
+  "immutabledict==4.3.1",
+]
+
+[project.scripts]
+proprio = "proprioception.cli:main"
+
+[project.entry-points."vllm.general_plugins"]
+proprioception = "proprioception.vllm_plugin:register"
+
+[tool.uv]
+required-environments = [
+  "sys_platform == 'linux' and platform_machine == 'x86_64'",
+]
+
+[[tool.uv.index]]
+explicit = true
+name = "flashinfer-cu130"
+url = "https://flashinfer.ai/whl/cu130"
+
+[tool.uv.sources]
+flashinfer-jit-cache = {index = "flashinfer-cu130"}
+
+[tool.setuptools.packages.find]
+include = ["proprioception*", "evals*"]
+
+[tool.ruff]
+fix = true
+line-length = 120
+target-version = 'py312'
+
+exclude = [
+  ".git",
+  "/build",
+  "__pycache__",
+  "*.pyi",
+  "outputs",
+]
+
+[tool.ruff.lint]
+ignore = [
+  "E203",
+  "E501",
+  "E731",
+  "E741",
+  "B006",
+  "B008",
+  "B905",
+  "C408",
+  "G004",
+  "SIM103",
+  "B010",
+  "F401",
+  "PLC0415",
+  "SIM118",
+  "W291",
+]
+select = ["E", "F", "B", "C4", "PLC", "G", "PIE", "SIM", "W", "B9"]

@@ -1,0 +1,11 @@
+[model]
+name = "${PROPRIOCEPTION_OUTPUTS}/sft-qwen36-routing/hf"
+
+[parallel]
+tp = 2
+
+[weight_broadcast]
+type = "nccl"
+
+[vllm_extra]
+moe_backend = "triton"

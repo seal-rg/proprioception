@@ -1,0 +1,18 @@
+name = "trinity_routing"
+family = "trinity_mini"
+domain = "routing"
+output = "${PROPRIOCEPTION_OUTPUTS}/evals"
+gpu = "auto"
+gpu_memory_utilization = 0.95
+max_model_len = 40960
+concurrency = 32
+judge_model = "openai/gpt-5.6-luna"
+
+[models.base]
+checkpoint = "${PROPRIOCEPTION_MODELS}/Trinity-Mini"
+role = "base"
+
+[suite.template]
+data_dirs = ["${PROPRIOCEPTION_DATA}/trinity_routing_all"]
+[suite.stability]
+train_dataset = "${PROPRIOCEPTION_DATA}/trinity_routing_all"

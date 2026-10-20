@@ -1,0 +1,79 @@
+[suite.diagnostics]
+num_conversations = 6
+[suite.diagnostics_torch]
+num_sequences = 4
+[suite.stability]
+max_depth = 2
+num_axis_questions = 8
+num_questions_per_type = 6
+recursion_depth = 1
+[suite.batch_routing]
+num_conversations = 8
+num_questions = 10
+num_repeats = 2
+[suite.contextual]
+num_emoji = 10
+num_per_impossible_template = 1
+num_token_ids = 5
+num_tokenization_texts = 5
+[suite.control]
+num_rounds = 1
+num_tasks = 6
+[suite.perez]
+num_per_subset = 4
+[suite.factuality]
+num_simpleqa = 8
+num_triviaqa = 12
+[suite.introspection]
+num_rows = 18
+[suite.turpin]
+num_mmlu = 6
+num_per_task = 2
+[suite.ciaware]
+limit = 2
+settings = "essay"
+[suite.sad]
+n = 12
+tasks = "facts_human_defaults,stages_oversight,id_leverage_entity_name"
+[suite.mask]
+limit = 3
+[suite.mask_self_report]
+[suite.harmbench]
+limit = 6
+[suite.strongreject]
+limit = 6
+[suite.truthfulqa]
+limit = 6
+[suite.pushback]
+num_conversations = 6
+num_mmlu = 6
+num_questions_per_type = 4
+[suite.lanham]
+num_questions = 6
+[suite.benchmarks]
+limit = 8
+tasks = ["gsm8k_cot_zeroshot", "ifeval"]
+[suite.template]
+[suite.ablation]
+num_groups = 1
+[suite.injection]
+answer_modes = "nothink"
+depths = [0.9]
+num_controls = 3
+num_heldout = 3
+num_negated = 1
+num_random = 1
+num_steer = 2
+num_third_person = 2
+num_words = 3
+strengths = [4.0]
+yes_bias_concepts_per_question = 1
+[suite.legibility]
+answer_modes = "nothink"
+num_concept_rows = 60
+num_control = 20
+num_harm_eval = 8
+num_harm_train = 40
+num_roleplaying = 8
+[suite.capability]
+num_problems = 8

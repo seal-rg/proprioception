@@ -1,0 +1,19 @@
+name = "nemotron_logits"
+family = "nemotron_cascade_2"
+domain = "logits"
+output = "${PROPRIOCEPTION_OUTPUTS}/evals"
+gpu = "auto"
+gpu_memory_utilization = 0.95
+max_model_len = 40960
+max_num_seqs = 128
+concurrency = 32
+judge_model = "openai/gpt-5.6-luna"
+
+[models.base]
+checkpoint = "${PROPRIOCEPTION_MODELS}/Nemotron-Cascade-2-30B-A3B"
+role = "base"
+
+[suite.template]
+data_dirs = ["${PROPRIOCEPTION_DATA}/nemotron_logits_all"]
+[suite.stability]
+train_dataset = "${PROPRIOCEPTION_DATA}/nemotron_logits_all"

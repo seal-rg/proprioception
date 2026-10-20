@@ -1,0 +1,100 @@
+{"id": "def_01", "prompt": "Define photosynthesis in two or three sentences.", "kind": "definition"}
+{"id": "def_02", "prompt": "What does the word ephemeral mean? Give a short definition and one example sentence.", "kind": "definition"}
+{"id": "def_03", "prompt": "Define inflation as the term is used in economics.", "kind": "definition"}
+{"id": "def_04", "prompt": "What is a prime number? Define it briefly and give two examples.", "kind": "definition"}
+{"id": "def_05", "prompt": "Define the term algorithm for a general audience.", "kind": "definition"}
+{"id": "def_06", "prompt": "What does biodiversity mean? Give a short definition.", "kind": "definition"}
+{"id": "def_07", "prompt": "Define metaphor and give one example.", "kind": "definition"}
+{"id": "def_08", "prompt": "What is a peninsula? Define it and name one example.", "kind": "definition"}
+{"id": "def_09", "prompt": "Define osmosis in simple terms.", "kind": "definition"}
+{"id": "def_10", "prompt": "What does renewable energy mean? Define it and name two sources.", "kind": "definition"}
+{"id": "def_11", "prompt": "Define democracy in two sentences.", "kind": "definition"}
+{"id": "def_12", "prompt": "What is latency in computer networking? Give a short definition.", "kind": "definition"}
+{"id": "def_13", "prompt": "Define empathy and distinguish it from sympathy in one sentence.", "kind": "definition"}
+{"id": "def_14", "prompt": "What is a hypothesis in science? Define it briefly.", "kind": "definition"}
+{"id": "def_15", "prompt": "Define gravity in plain language.", "kind": "definition"}
+{"id": "def_16", "prompt": "What does monopoly mean in economics? Give a short definition.", "kind": "definition"}
+{"id": "def_17", "prompt": "Define irony briefly and give one example.", "kind": "definition"}
+{"id": "def_18", "prompt": "What is a vaccine? Define it in two or three sentences.", "kind": "definition"}
+{"id": "def_19", "prompt": "Define ecosystem in two sentences.", "kind": "definition"}
+{"id": "def_20", "prompt": "What does recursion mean in programming? Give a short definition.", "kind": "definition"}
+{"id": "exp_01", "prompt": "Explain in a few sentences why the sky looks blue.", "kind": "explanation"}
+{"id": "exp_02", "prompt": "Explain why leaves change color in autumn.", "kind": "explanation"}
+{"id": "exp_03", "prompt": "Explain how a thermostat keeps a room at a set temperature.", "kind": "explanation"}
+{"id": "exp_04", "prompt": "Explain why we have leap years.", "kind": "explanation"}
+{"id": "exp_05", "prompt": "Explain why a moving bicycle is easier to balance than a stationary one.", "kind": "explanation"}
+{"id": "exp_06", "prompt": "Explain why ice cubes crack when dropped into a warm drink.", "kind": "explanation"}
+{"id": "exp_07", "prompt": "Explain why the Moon appears to change shape over a month.", "kind": "explanation"}
+{"id": "exp_08", "prompt": "Explain what a firewall does in a computer network.", "kind": "explanation"}
+{"id": "exp_09", "prompt": "Explain why bread rises when baked with yeast.", "kind": "explanation"}
+{"id": "exp_10", "prompt": "Explain how a rainbow forms.", "kind": "explanation"}
+{"id": "exp_11", "prompt": "Explain why a boat made of steel can float.", "kind": "explanation"}
+{"id": "exp_12", "prompt": "Explain why we feel colder on a windy day even when the temperature is the same.", "kind": "explanation"}
+{"id": "exp_13", "prompt": "Explain how a magnifying glass makes things look bigger.", "kind": "explanation"}
+{"id": "exp_14", "prompt": "Explain why salt is added to the water when boiling pasta.", "kind": "explanation"}
+{"id": "exp_15", "prompt": "Explain why the ocean has tides.", "kind": "explanation"}
+{"id": "exp_16", "prompt": "Explain how a simple circuit with a battery, a wire and a bulb lights the bulb.", "kind": "explanation"}
+{"id": "exp_17", "prompt": "Explain why airplanes sometimes leave white trails in the sky.", "kind": "explanation"}
+{"id": "exp_18", "prompt": "Explain why a compass needle points north.", "kind": "explanation"}
+{"id": "exp_19", "prompt": "Explain why we get goosebumps when we are cold.", "kind": "explanation"}
+{"id": "exp_20", "prompt": "Explain what causes an echo.", "kind": "explanation"}
+{"id": "list_01", "prompt": "List five fruits that are typically red when ripe.", "kind": "list"}
+{"id": "list_02", "prompt": "List the four seasons and one typical outdoor activity for each.", "kind": "list"}
+{"id": "list_03", "prompt": "List six countries in South America.", "kind": "list"}
+{"id": "list_04", "prompt": "List five common household tools and what each is used for.", "kind": "list"}
+{"id": "list_05", "prompt": "List the planets of the solar system in order from the Sun.", "kind": "list"}
+{"id": "list_06", "prompt": "List four types of renewable energy.", "kind": "list"}
+{"id": "list_07", "prompt": "List five mammals that live in the ocean.", "kind": "list"}
+{"id": "list_08", "prompt": "List the three primary colors and the three secondary colors.", "kind": "list"}
+{"id": "list_09", "prompt": "List five things to bring for a day at the beach.", "kind": "list"}
+{"id": "list_10", "prompt": "List four programming languages and one thing each is commonly used for.", "kind": "list"}
+{"id": "list_11", "prompt": "List the days of the week in French.", "kind": "list"}
+{"id": "list_12", "prompt": "List five musical instruments in the string family.", "kind": "list"}
+{"id": "list_13", "prompt": "List four safety steps to take during an earthquake.", "kind": "list"}
+{"id": "list_14", "prompt": "List five vegetables that grow underground.", "kind": "list"}
+{"id": "list_15", "prompt": "List the three common states of matter with one everyday example of each.", "kind": "list"}
+{"id": "list_16", "prompt": "List five European capital cities together with their countries.", "kind": "list"}
+{"id": "list_17", "prompt": "List four ingredients in a basic pancake batter.", "kind": "list"}
+{"id": "list_18", "prompt": "List five common symptoms of the flu.", "kind": "list"}
+{"id": "list_19", "prompt": "List four main parts of a flowering plant and what each does.", "kind": "list"}
+{"id": "list_20", "prompt": "List five team sports played with a ball and the number of players per side.", "kind": "list"}
+{"id": "reason_01", "prompt": "If today is Wednesday, what day of the week will it be in 10 days? Explain briefly.", "kind": "short_reasoning"}
+{"id": "reason_02", "prompt": "A farmer has 17 sheep, sells 9, and then buys 4 more. How many sheep does he have? Show the steps.", "kind": "short_reasoning"}
+{"id": "reason_03", "prompt": "A drawer holds 3 red socks and 3 blue socks. How many socks must you take out in the dark to guarantee a matching pair? Explain.", "kind": "short_reasoning"}
+{"id": "reason_04", "prompt": "A bus leaves at 9:40 and the trip takes 1 hour and 35 minutes. When does it arrive? Explain.", "kind": "short_reasoning"}
+{"id": "reason_05", "prompt": "Which is heavier, 500 g of feathers or 0.4 kg of iron? Explain your reasoning.", "kind": "short_reasoning"}
+{"id": "reason_06", "prompt": "If 4 pencils cost 6 dollars, how much do 10 pencils cost? Show your steps.", "kind": "short_reasoning"}
+{"id": "reason_07", "prompt": "Anna is taller than Ben, and Ben is taller than Carla. Who is the shortest? Explain.", "kind": "short_reasoning"}
+{"id": "reason_08", "prompt": "A rectangle is 6 cm by 4 cm. What are its perimeter and its area? Show the work.", "kind": "short_reasoning"}
+{"id": "reason_09", "prompt": "A clock shows 3:15. How many minutes until 4:00? Explain.", "kind": "short_reasoning"}
+{"id": "reason_10", "prompt": "A shop gives 10% off a 50-dollar jacket. What is the final price? Show the steps.", "kind": "short_reasoning"}
+{"id": "reason_11", "prompt": "Every cat in a room has four legs and there are 20 cat legs in total. How many cats are there? Explain.", "kind": "short_reasoning"}
+{"id": "reason_12", "prompt": "You read 20 pages per day. How many days does it take to finish a 250-page book? Explain.", "kind": "short_reasoning"}
+{"id": "reason_13", "prompt": "Which number does not belong in the list 2, 4, 7, 8, 10, and why?", "kind": "short_reasoning"}
+{"id": "reason_14", "prompt": "A train travels 60 km in 45 minutes. What is its speed in km/h? Show the steps.", "kind": "short_reasoning"}
+{"id": "reason_15", "prompt": "A carton has 12 eggs. You use 5 for breakfast and 3 for baking. How many are left? Explain.", "kind": "short_reasoning"}
+{"id": "reason_16", "prompt": "The temperature was -3 degrees in the morning and rose by 8 degrees. What is it now? Explain.", "kind": "short_reasoning"}
+{"id": "reason_17", "prompt": "A box of 24 chocolates is shared equally among 6 friends. How many does each get, and how many each if two more friends join? Show the steps.", "kind": "short_reasoning"}
+{"id": "reason_18", "prompt": "What is the next number in the sequence 3, 6, 12, 24? Explain the pattern.", "kind": "short_reasoning"}
+{"id": "reason_19", "prompt": "If Tuesday is two days after a certain day, what day is that? Explain.", "kind": "short_reasoning"}
+{"id": "reason_20", "prompt": "A square has a perimeter of 36 cm. What is the length of one side, and what is its area? Show the work.", "kind": "short_reasoning"}
+{"id": "rewrite_01", "prompt": "Rewrite this sentence in a more formal tone: \"Hey, can you send me that report thing by tomorrow?\"", "kind": "rewrite"}
+{"id": "rewrite_02", "prompt": "Rewrite this sentence in the passive voice: \"The committee approved the new budget on Monday.\"", "kind": "rewrite"}
+{"id": "rewrite_03", "prompt": "Rewrite this sentence to be more concise: \"In spite of the fact that it was raining, we made the decision to go ahead and take a walk anyway.\"", "kind": "rewrite"}
+{"id": "rewrite_04", "prompt": "Rewrite this sentence in the past tense: \"She walks to the market every morning and buys fresh bread.\"", "kind": "rewrite"}
+{"id": "rewrite_05", "prompt": "Rewrite this sentence so a ten-year-old could understand it: \"The mitigation strategy necessitates a comprehensive reevaluation of our procurement processes.\"", "kind": "rewrite"}
+{"id": "rewrite_06", "prompt": "Rewrite this message in a friendlier tone: \"Your request has been denied. Do not resubmit.\"", "kind": "rewrite"}
+{"id": "rewrite_07", "prompt": "Rewrite this sentence as a question: \"The museum opens at nine on weekends.\"", "kind": "rewrite"}
+{"id": "rewrite_08", "prompt": "Rewrite this sentence without the clichés: \"At the end of the day, we need to think outside the box.\"", "kind": "rewrite"}
+{"id": "rewrite_09", "prompt": "Rewrite this run-on sentence as two clear sentences: \"I went to the store and I bought milk and then I realized I forgot my wallet so I had to go back home.\"", "kind": "rewrite"}
+{"id": "rewrite_10", "prompt": "Rewrite this sentence in the first person: \"The applicant has five years of experience and is fluent in two languages.\"", "kind": "rewrite"}
+{"id": "rewrite_11", "prompt": "Rewrite this sentence to sound more enthusiastic: \"The event was fine and some people attended.\"", "kind": "rewrite"}
+{"id": "rewrite_12", "prompt": "Rewrite this notice in plain English: \"Please be advised that the aforementioned premises will be inaccessible during the maintenance window.\"", "kind": "rewrite"}
+{"id": "rewrite_13", "prompt": "Rewrite this sentence using positive phrasing: \"Don't forget to not leave the door unlocked.\"", "kind": "rewrite"}
+{"id": "rewrite_14", "prompt": "Rewrite this sentence in the future tense: \"The team finished the project and celebrated with dinner.\"", "kind": "rewrite"}
+{"id": "rewrite_15", "prompt": "Rewrite this as a polite request: \"Give me the keys.\"", "kind": "rewrite"}
+{"id": "rewrite_16", "prompt": "Rewrite this sentence to remove the redundancy: \"The final end result was completely and totally unexpected.\"", "kind": "rewrite"}
+{"id": "rewrite_17", "prompt": "Rewrite this quotation as reported speech: She said, \"I will call you tomorrow.\"", "kind": "rewrite"}
+{"id": "rewrite_18", "prompt": "Rewrite this sentence in the active voice: \"The cake was eaten by the children before dinner was served.\"", "kind": "rewrite"}
+{"id": "rewrite_19", "prompt": "Rewrite this sentence to be gender-neutral: \"Every doctor should update his license annually.\"", "kind": "rewrite"}
+{"id": "rewrite_20", "prompt": "Rewrite this sentence as a headline of at most eight words: \"The city council decided yesterday to build a new bridge across the river by 2030.\"", "kind": "rewrite"}

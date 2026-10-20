@@ -1,0 +1,36 @@
+{"type": "routing", "template": "Quick check on your internals: for {token_ref}, layer {layer}'s router put one expert in first place. Which one?"}
+{"type": "routing", "template": "If I could look at the routing table of layer {layer} for {token_ref}, which expert id would sit at the top?"}
+{"type": "routing", "template": "At layer {layer}, {token_ref} was dispatched to several experts; name the one with the largest routing score."}
+{"type": "routing", "template": "Thinking back to {token_ref}: in layer {layer}, which expert won the routing?"}
+{"type": "routing", "template": "Which single expert index did layer {layer} favour most for {token_ref}?"}
+{"type": "routing_rank", "template": "For {token_ref} at layer {layer}, the router made an ordered list of experts. Which expert is {rank_ref} on that list?"}
+{"type": "routing_rank", "template": "Skip the winner: at layer {layer}, which expert did the router place {rank_ref} for {token_ref}?"}
+{"type": "routing_rank", "template": "Looking at layer {layer}'s ranking for {token_ref}, tell me the expert in the {rank_ref} slot."}
+{"type": "routing_share", "template": "At layer {layer}, how much of the combined expert weight for {token_ref} belonged to the leading expert? Give a whole percent."}
+{"type": "routing_share", "template": "Layer {layer} mixed a few experts for {token_ref}. What percentage of that mix was the top expert's?"}
+{"type": "routing_share", "template": "For {token_ref} in layer {layer}, what share (whole percent) did the strongest expert take of the selected experts' weight?"}
+{"type": "routing_partner", "template": "In layer {layer}, find the nearest other token in that sentence that landed on the same top expert as {token_ref}. Which token is it, or none?"}
+{"type": "routing_partner", "template": "Which neighbouring token shared {token_ref}'s favourite expert at layer {layer}? Name the closest one, or say none."}
+{"type": "routing_partner", "template": "Same expert, closest neighbour: at layer {layer}, which different token nearest to {token_ref} had the same top expert? Answer none if there is none."}
+{"type": "top_token", "template": "Right after {token_ref}, what was the {rank_ref} continuation according to your own output distribution?"}
+{"type": "top_token", "template": "Before seeing what followed {token_ref}, which token did you rate {rank_ref} to come next?"}
+{"type": "top_token", "template": "Your prediction at {token_ref}: which token was {rank_ref}?"}
+{"type": "unpicked_token", "template": "At {token_ref}, what was your strongest guess for the next token other than the one that actually appeared?"}
+{"type": "unpicked_token", "template": "Ignoring the token that really came after {token_ref}, which token did you expect most?"}
+{"type": "unpicked_token", "template": "The runner-up: after {token_ref}, which token was your best prediction that did not come?"}
+{"type": "token_prob", "template": "How much probability had you put on the token that actually followed {token_ref}? Whole percent."}
+{"type": "token_prob", "template": "At {token_ref}, what percent chance did you give the continuation that then appeared?"}
+{"type": "token_prob", "template": "Was the token after {token_ref} expected? State the probability you assigned it, in whole percent."}
+{"type": "entropy", "template": "How spread out was your next-token distribution at {token_ref}? Give the entropy in bits with one decimal."}
+{"type": "entropy", "template": "At {token_ref}, how many bits of entropy did your prediction for the next token carry? One decimal."}
+{"type": "entropy", "template": "Measure your own uncertainty at {token_ref}: entropy of the next-token distribution, in bits, one decimal."}
+{"type": "lens_top_token", "template": "If your output head had been applied straight to layer {layer}'s residual at {token_ref}, which token would have been {rank_ref}?"}
+{"type": "lens_top_token", "template": "Through the logit lens at layer {layer}, what was the {rank_ref} next-token guess at {token_ref}?"}
+{"type": "lens_top_token", "template": "At {token_ref}, layer {layer} already leaned towards some next token; which one was {rank_ref}?"}
+{"type": "lens_token_prob", "template": "Reading layer {layer} through your output head at {token_ref}, what probability did the token that actually came next have? Whole percent."}
+{"type": "lens_token_prob", "template": "At layer {layer}, before the later layers refined it, how likely (whole percent) was the actual continuation of {token_ref}?"}
+{"type": "lens_entropy", "template": "How uncertain was layer {layer}'s residual at {token_ref} when read out as a next-token distribution? Entropy in bits, one decimal."}
+{"type": "lens_entropy", "template": "Logit lens, layer {layer}, position of {token_ref}: what was the entropy in bits (one decimal)?"}
+{"type": "decision_depth", "template": "For the token after {token_ref}, from which layer onward did your final choice stay in first place through the logit lens?"}
+{"type": "decision_depth", "template": "At {token_ref}, how early was your eventual next-token prediction settled? Give the first layer from which the lens argmax never changed."}
+{"type": "decision_depth", "template": "Which layer index marks the point where your top prediction for the token following {token_ref} became final?"}
